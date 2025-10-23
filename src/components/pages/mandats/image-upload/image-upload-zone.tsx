@@ -209,107 +209,77 @@ export function ImageUploadZone({
   };
 
   return (
-    <div className="space-y-4">
-      {/* Zone d'upload */}
-      <div
-        className={cn(
-          "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
-          isDragOver
-            ? "border-primary bg-primary/5"
-            : "border-muted-foreground/25 hover:border-muted-foreground/50"
-        )}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
+   <div className="space-y-4">
+  {/* Zone d'upload */}
+  <div
+    className={cn(
+      "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
+      isDragOver
+        ? "border-primary bg-primary/5"
+        : "border-muted-foreground/25 hover:border-muted-foreground/50"
+    )}
+    onDrop={handleDrop}
+    onDragOver={handleDragOver}
+    onDragLeave={handleDragLeave}
+  >
+    <div className="flex flex-col items-center gap-3">
+      <Upload className="h-8 w-8 text-muted-foreground" />
+
+     <p className="text-sm" style={{ color: '#6A7282' }}>
+  Glissez-déposez vos images ici ou <br />
+  (Taille maximale : 30 Mo)
+</p>
+
+
+
+      <Button
+        type="button"
+        className="bg-[#186BB0] text-white hover:bg-[#145a96]"
+        onClick={() => document.getElementById("file-input")?.click()}
       >
-        <div className="flex flex-col items-center gap-2">
-          <Upload className="h-8 w-8 text-muted-foreground" />
-          <div className="text-sm text-muted-foreground">
-            <p>Glissez-déposez vos images ici ou</p>
+         + Ajouter un fichier
+      </Button>
+    </div>
+
+    <input
+      id="file-input"
+      type="file"
+      multiple
+      accept="image/jpeg,image/jpg,image/png,image/webp"
+      onChange={handleFileSelect}
+      className="hidden"
+    />
+  </div>
+
+  {/* Prévisualisation des images */}
+  {currentImages.length > 0 && (
+    <div className="space-y-3">
+      <h4 className="text-sm font-medium">Images sélectionnées</h4>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {currentImages.map((imageUrl, index) => (
+          <div key={index} className="relative group">
+            <ImagePreview
+              src={imageUrl}
+              alt={`Image ${index + 1}`}
+              className="w-full h-24 object-cover rounded-md"
+            />
+
+            {/* Bouton de suppression */}
             <Button
               type="button"
-              variant="link"
-              className="p-0 h-auto"
-              onClick={() => document.getElementById("file-input")?.click()}
+              variant="destructive"
+              size="icon"
+              className="absolute -top-2 -right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+              onClick={() => handleRemoveImage(index)}
             >
-              cliquez pour sélectionner
+              <X className="h-3 w-3" />
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Formats acceptés: JPEG, PNG, WebP (max {maxFileSize}MB)
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {currentImages.length}/{maxImages} images
-          </p>
-        </div>
-
-        <input
-          id="file-input"
-          type="file"
-          multiple
-          accept="image/jpeg,image/jpg,image/png,image/webp"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
+        ))}
       </div>
-
-      {/* Prévisualisation des images */}
-      {currentImages.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="text-sm font-medium">Images sélectionnées</h4>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {currentImages.map((imageUrl, index) => (
-              <div key={index} className="relative group">
-                <ImagePreview
-                  src={imageUrl}
-                  alt={`Image ${index + 1}`}
-                  className="w-full h-24 object-cover rounded-md"
-                />
-
-                {/* Bouton de suppression */}
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  className="absolute -top-2 -right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={() => handleRemoveImage(index)}
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Indicateurs de progression */}
-      {Object.keys(uploadProgress).length > 0 && (
-        <div className="space-y-2">
-          {Object.entries(uploadProgress).map(([fileName, progress]) => (
-            <div key={fileName} className="space-y-1">
-              <div className="flex justify-between text-xs">
-                <span>{fileName}</span>
-                <span>{progress === -1 ? "Erreur" : `${progress}%`}</span>
-              </div>
-              <div className="w-full bg-muted rounded-full h-1">
-                <div
-                  className={cn(
-                    "h-1 rounded-full transition-all duration-300",
-                    progress === -1
-                      ? "bg-destructive"
-                      : progress === 100
-                      ? "bg-green-500"
-                      : "bg-primary"
-                  )}
-                  style={{
-                    width: progress === -1 ? "100%" : `${progress}%`,
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
+  )}
+</div>
+
   );
 }

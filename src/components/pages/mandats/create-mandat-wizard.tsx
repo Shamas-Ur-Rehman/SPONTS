@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Check } from "lucide-react";
 import {
   Plus,
   RefreshCw,
@@ -273,16 +274,17 @@ export function CreateMandatWizard() {
     return (
       <div className="space-y-8">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Créez un mandat</h2>
-          <p className="text-muted-foreground">
-            Commencez par les informations principales.
-          </p>
+          <h2 className="text-2xl font-bold mb-2 text-color :#111827">Créez un mandat</h2>
+          <p style={{ color: '#6A7282' }}>
+  Commencez par les informations principales.
+</p>
+
         </div>
 
         {/* Nom */}
         <div className="space-y-2">
           <Label htmlFor="nom" className="text-sm font-medium">
-            Nom du mandat *
+            Nom du mandat  <span style={{ color: '#C70036' }}>*</span>
           </Label>
           <Input
             id="nom"
@@ -298,18 +300,19 @@ export function CreateMandatWizard() {
         {/* Description */}
         <div className="space-y-2">
           <Label htmlFor="description" className="text-sm font-medium">
-            Description *
+            Description <span style={{ color: '#C70036' }}>*</span>
           </Label>
           <Textarea
-            id="description"
-            value={data.description}
-            minLength={10}
-            rows={4}
-            placeholder="Décrivez la marchandise et les besoins spécifiques"
-            onChange={(e) => handleChange("description", e.target.value)}
-            required
-            className="resize-none text-[#6A7282] bg-[#F9FAFB] border-[#E5E7EB]"
-          />
+  id="description"
+  value={data.description}
+  minLength={10}
+  rows={4}
+  placeholder="Décrivez la marchandise et les besoins spécifiques"
+  onChange={(e) => handleChange("description", e.target.value)}
+  required
+  className="resize-none text-[#6A7282] bg-[#F9FAFB] border-[#E5E7EB]"
+/>
+
           <p className="text-xs text-muted-foreground">
             {data.description.trim().length}/10 caractères minimum
           </p>
@@ -326,12 +329,26 @@ export function CreateMandatWizard() {
 
         {/* Navigation custom */}
         <div className="flex justify-between items-center pt-6">
-          <Button variant="outline" onClick={goNext} disabled>
-            ← Retour
-          </Button>
-          <Button onClick={goNext} disabled={!isValid}>
-            Continuer →
-          </Button>
+       <Button
+  variant="outline"
+  onClick={goNext}
+  disabled
+  className="bg-[#F3F4F6] text-[#64686e] border border-[#E5E7EB]"
+>
+  ← Retour
+</Button>
+
+
+      <Button
+  onClick={goNext}
+  disabled={!isValid}
+  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+>
+  Continuer
+</Button>
+
+
+
         </div>
       </div>
     );
@@ -411,7 +428,10 @@ export function CreateMandatWizard() {
       <div className="space-y-6">
         {/* Adresse complète */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Adresse complète *</Label>
+          <Label className="text-sm font-medium">
+  Adresse complète <span style={{ color: '#C70036' }}>*</span>
+</Label>
+
           <AddressInput
             value={data.depart_adresse}
             placeholder="Entrez adresse"
@@ -438,7 +458,7 @@ export function CreateMandatWizard() {
         {/* Pays et Canton/région */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Pays *</Label>
+            <Label className="text-sm font-medium">Pays <span style={{ color: '#C70036' }}>*</span></Label>
             <Select
               value={data.depart_pays}
               onValueChange={(value) =>
@@ -458,7 +478,7 @@ export function CreateMandatWizard() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Canton / région *</Label>
+            <Label className="text-sm font-medium">Canton / région <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               value={data.depart_canton}
               placeholder="Sélectionnez votre canton / région"
@@ -473,7 +493,7 @@ export function CreateMandatWizard() {
         {/* Ville et Code postal */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Votre ville *</Label>
+            <Label className="text-sm font-medium">Votre ville <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               value={data.depart_ville}
               placeholder="Sélectionnez la ville"
@@ -484,7 +504,7 @@ export function CreateMandatWizard() {
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Code postal *</Label>
+            <Label className="text-sm font-medium">Code postal <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               value={data.depart_code_postal}
               placeholder="Entrez le code postal"
@@ -499,7 +519,7 @@ export function CreateMandatWizard() {
         {/* Contact */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Nom du contact *</Label>
+            <Label className="text-sm font-medium">Nom du contact <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               value={data.depart_contact ?? ""}
               placeholder="Personne à contacter sur place"
@@ -511,7 +531,7 @@ export function CreateMandatWizard() {
           </div>
           <div className="space-y-2">
             <Label className="text-sm font-medium">
-              Téléphone du contact *
+              Téléphone du contact <span style={{ color: '#C70036' }}>*</span>
             </Label>
             <Input
               value={data.depart_telephone}
@@ -544,15 +564,22 @@ export function CreateMandatWizard() {
 
       {/* Navigation */}
       <div className="flex justify-between items-center pt-6">
-        <Button variant="outline" onClick={goBack}>
-          ← Retour
-        </Button>
         <Button
-          onClick={() => setAddressSubStep(1)}
-          disabled={!data.depart_adresse.adresse.trim()}
-        >
-          Continuer →
-        </Button>
+  variant="outline"
+  onClick={goBack}
+  className="bg-[#F3F4F6] text-[#70757c] border border-[#E5E7EB]"
+>
+  ← Retour
+</Button>
+
+       <Button
+  onClick={() => setAddressSubStep(1)}
+  disabled={!data.depart_adresse.adresse.trim()}
+  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+>
+  Continuer 
+</Button>
+
       </div>
     </div>
   );
@@ -569,7 +596,7 @@ export function CreateMandatWizard() {
       <div className="space-y-6">
         {/* Adresse complète */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Adresse complète *</Label>
+          <Label className="text-sm font-medium">Adresse complète <span style={{ color: '#C70036' }}>*</span></Label>
           <AddressInput
             value={data.arrivee_adresse}
             placeholder="Entrez adresse"
@@ -596,7 +623,7 @@ export function CreateMandatWizard() {
         {/* Pays et Canton/région */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Pays *</Label>
+            <Label className="text-sm font-medium">Pays <span style={{ color: '#C70036' }}>*</span></Label>
             <Select
               value={data.arrivee_pays}
               onValueChange={(value) =>
@@ -616,7 +643,7 @@ export function CreateMandatWizard() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">État/province *</Label>
+            <Label className="text-sm font-medium">État/province <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               value={data.arrivee_canton}
               placeholder="Sélectionnez le canton / région"
@@ -631,7 +658,7 @@ export function CreateMandatWizard() {
         {/* Ville et Code postal */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Votre ville *</Label>
+            <Label className="text-sm font-medium">Votre ville <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               value={data.arrivee_ville}
               placeholder="Sélectionnez la ville"
@@ -642,7 +669,7 @@ export function CreateMandatWizard() {
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Code postal *</Label>
+            <Label className="text-sm font-medium">Code postal <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               value={data.arrivee_code_postal}
               placeholder="Entrez le code postal"
@@ -657,7 +684,7 @@ export function CreateMandatWizard() {
         {/* Contact */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Nom du contact *</Label>
+            <Label className="text-sm font-medium">Nom du contact<span style={{ color: '#C70036' }}>*</span> </Label>
             <Input
               value={data.arrivee_contact ?? ""}
               placeholder="Personne à contacter sur place"
@@ -669,7 +696,7 @@ export function CreateMandatWizard() {
           </div>
           <div className="space-y-2">
             <Label className="text-sm font-medium">
-              Téléphone du contact *
+              Téléphone du contact <span style={{ color: '#C70036' }}>*</span> 
             </Label>
             <Input
               value={data.arrivee_telephone}
@@ -702,15 +729,22 @@ export function CreateMandatWizard() {
 
       {/* Navigation */}
       <div className="flex justify-between items-center pt-6">
-        <Button variant="outline" onClick={() => setAddressSubStep(0)}>
-          ← Retour
-        </Button>
-        <Button
-          onClick={goNext}
-          disabled={!data.arrivee_adresse.adresse.trim()}
-        >
-          Continuer →
-        </Button>
+     <Button
+  variant="outline"
+  onClick={() => setAddressSubStep(0)}
+  className="bg-[#F3F4F6] text-[#888d95] border border-[#E5E7EB]"
+>
+  ← Retour
+</Button>
+
+      <Button
+  onClick={goNext}
+  disabled={!data.arrivee_adresse.adresse.trim()}
+  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+>
+  Continuer →
+</Button>
+
       </div>
     </div>
   );
@@ -729,7 +763,7 @@ export function CreateMandatWizard() {
       <div className="space-y-6">
         {/* Type de marchandise */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Type de marchandise *</Label>
+          <Label className="text-sm font-medium">Type de marchandise <span style={{ color: '#C70036' }}>*</span></Label>
           <Select
             value={data.type_marchandise ?? ""}
             onValueChange={(value) =>
@@ -755,7 +789,7 @@ export function CreateMandatWizard() {
         {/* Poids et Volume */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Poids total (kg) *</Label>
+            <Label className="text-sm font-medium">Poids total (kg) <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               type="number"
               min="0.1"
@@ -772,7 +806,7 @@ export function CreateMandatWizard() {
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Volume total (m³) *</Label>
+            <Label className="text-sm font-medium">Volume total (m³) <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               type="number"
               min="0.01"
@@ -789,7 +823,7 @@ export function CreateMandatWizard() {
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Surface (m²) *</Label>
+            <Label className="text-sm font-medium">Surface (m²) <span style={{ color: '#C70036' }}>*</span></Label>
             <Input
               type="number"
               min="0.01"
@@ -855,7 +889,7 @@ export function CreateMandatWizard() {
 
         {/* Accès au site */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Accès au site *</Label>
+          <Label className="text-sm font-medium">Accès au site <span style={{ color: '#C70036' }}>*</span></Label>
           <Select
             value={data.type_acces ?? ""}
             onValueChange={(value) =>
@@ -880,7 +914,7 @@ export function CreateMandatWizard() {
 
         {/* Moyen de chargement */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Moyen de chargement *</Label>
+          <Label className="text-sm font-medium">Moyen de chargement <span style={{ color: '#C70036' }}>*</span></Label>
           <Select
             value={data.moyen_chargement ?? ""}
             onValueChange={(value) =>
@@ -907,7 +941,7 @@ export function CreateMandatWizard() {
         {data.type_acces === TypeAcces.Autre && (
           <div className="space-y-2">
             <Label className="text-sm font-medium">
-              Précisez l'accès (si "autre") *
+              Précisez l'accès (si "autre") <span style={{ color: '#C70036' }}>*</span>
             </Label>
             <Textarea
               value={data.acces_autre ?? ""}
@@ -924,15 +958,22 @@ export function CreateMandatWizard() {
 
       {/* Navigation */}
       <div className="flex justify-between items-center pt-6">
-        <Button variant="outline" onClick={goBack}>
-          ← Retour
-        </Button>
         <Button
-          onClick={() => setMerchandiseSubStep(1)}
-          disabled={data.poids_total_kg < 0.1}
-        >
-          Continuer →
-        </Button>
+  variant="outline"
+  onClick={goBack}
+  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB]"
+>
+  ← Retour
+</Button>
+
+       <Button
+  onClick={() => setMerchandiseSubStep(1)}
+  disabled={data.poids_total_kg < 0.1}
+  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+>
+  Continuer →
+</Button>
+
       </div>
     </div>
   );
@@ -1007,7 +1048,7 @@ export function CreateMandatWizard() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
-                      Température min (°C) *
+                      Température min (°C) <span style={{ color: '#C70036' }}>*</span>
                     </Label>
                     <Input
                       type="number"
@@ -1024,7 +1065,7 @@ export function CreateMandatWizard() {
                   </div>
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
-                      Température max (°C) *
+                      Température max (°C) <span style={{ color: '#C70036' }}>*</span>
                     </Label>
                     <Input
                       type="number"
@@ -1079,7 +1120,7 @@ export function CreateMandatWizard() {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium">Classe ADR *</Label>
+                    <Label className="text-sm font-medium">Classe ADR <span style={{ color: '#C70036' }}>*</span></Label>
                     <Select
                       value={data.adr_classe?.toString() ?? ""}
                       onValueChange={(value) =>
@@ -1102,7 +1143,7 @@ export function CreateMandatWizard() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium">N° ONU *</Label>
+                    <Label className="text-sm font-medium">N° ONU <span style={{ color: '#C70036' }}>*</span></Label>
                     <Input
                       placeholder="1234"
                       value={data.adr_uno ?? ""}
@@ -1120,9 +1161,15 @@ export function CreateMandatWizard() {
 
         {/* Navigation */}
         <div className="flex justify-between items-center pt-6">
-          <Button variant="outline" onClick={() => setMerchandiseSubStep(0)}>
-            ← Retour
-          </Button>
+        <Button
+  variant="outline"
+  onClick={() => setMerchandiseSubStep(0)}
+  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+>
+  ← Retour
+</Button>
+
+
           <Button onClick={goNext}>Continuer →</Button>
         </div>
       </div>
@@ -1140,14 +1187,21 @@ export function CreateMandatWizard() {
     PenTool,
   ];
 
-  const steps: Step[] = [
-    {
-      label: "Créer un mandat",
-      description: "Informations principales du mandat",
-      content: (next) => Step1(next),
-      isValid: () =>
-        data.nom.trim().length > 0 && data.description.trim().length >= 10,
-    },
+ const steps: Step[] = [
+  {
+     label: (
+  <span className="text-[#186BB0] font-semibold">
+    Créer un mandat
+  </span>
+),
+
+
+    description: "Informations principales du mandat",
+    content: (next) => Step1(next),
+    isValid: () =>
+      data.nom.trim().length > 0 && data.description.trim().length >= 10,
+  },
+
     {
       label: "Adresse",
       description: "Points de départ et d'arrivée",
@@ -1189,7 +1243,7 @@ export function CreateMandatWizard() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-medium">
-                  Enlèvement souhaité — début *
+                  Enlèvement souhaité — début <span style={{ color: '#C70036' }}>*</span>
                 </Label>
                 <DateTimeInput
                   value={data.enlevement_souhaite_debut_at}
@@ -1206,7 +1260,7 @@ export function CreateMandatWizard() {
               </div>
               <div className="space-y-2">
                 <Label className="text-sm font-medium">
-                  Enlèvement souhaité — fin *
+                  Enlèvement souhaité — fin <span style={{ color: '#C70036' }}>*</span>
                 </Label>
                 <DateTimeInput
                   value={data.enlevement_souhaite_fin_at}
@@ -1288,10 +1342,11 @@ export function CreateMandatWizard() {
 
           {/* Message d'information */}
           <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
-            <p className="text-sm text-blue-800 flex items-start gap-2">
-              <span className="text-blue-600">ℹ️</span>
+            <p className="text-sm text-[#0E406A] flex items-start gap-2">
+              <span className="text-[#0E406A]">ℹ️</span>
+
               Les horaires exacts pourront être confirmés avec le transporteur
-              après la mise en relation.*
+              après la mise en relation.<span style={{ color: '#C70036' }}>*</span>
             </p>
           </div>
 
@@ -1317,21 +1372,29 @@ export function CreateMandatWizard() {
             )}
 
           <div className="flex justify-between items-center pt-6 border-t">
-            <Button variant="outline" onClick={back} size="lg">
-              ← Retour
-            </Button>
             <Button
-              onClick={next}
-              disabled={
-                !data.enlevement_souhaite_debut_at ||
-                !data.enlevement_souhaite_fin_at ||
-                new Date(data.enlevement_souhaite_debut_at) >=
-                  new Date(data.enlevement_souhaite_fin_at)
-              }
-              size="lg"
-            >
-              Continuer →
-            </Button>
+  variant="outline"
+  onClick={back}
+  size="lg"
+  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+>
+  ← Retour
+</Button>
+
+           <Button
+  onClick={next}
+  disabled={
+    !data.enlevement_souhaite_debut_at ||
+    !data.enlevement_souhaite_fin_at ||
+    new Date(data.enlevement_souhaite_debut_at) >=
+      new Date(data.enlevement_souhaite_fin_at)
+  }
+  size="lg"
+  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
+>
+  Continuer →
+</Button>
+
           </div>
         </div>
       ),
@@ -1470,12 +1533,23 @@ export function CreateMandatWizard() {
           </div>
 
           <div className="flex justify-between items-center pt-6 border-t">
-            <Button variant="outline" onClick={back} size="lg">
-              Retour
-            </Button>
-            <Button onClick={next} size="lg">
-              Continuer vers le devis
-            </Button>
+            <Button
+  variant="outline"
+  onClick={back}
+  size="lg"
+  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+>
+  Retour
+</Button>
+
+            <Button
+  onClick={next}
+  size="lg"
+  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
+>
+  Continuer vers le devis
+</Button>
+
           </div>
         </div>
       ),
@@ -1566,25 +1640,33 @@ export function CreateMandatWizard() {
           )}
 
           <div className="flex justify-between items-center pt-6 border-t">
-            <Button variant="outline" onClick={back} size="lg">
-              Retour
-            </Button>
+           <Button
+  variant="outline"
+  onClick={back}
+  size="lg"
+  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+>
+  Retour
+</Button>
+
             <Button
-              onClick={() => {
-                if (quote) {
-                  setData((p) => ({
-                    ...p,
-                    prix_estime_ht: quote.prixEstimeHt,
-                    prix_estime_ttc: quote.prixEstimeTtc,
-                  }));
-                  next();
-                }
-              }}
-              disabled={!quote}
-              size="lg"
-            >
-              Accepter et continuer
-            </Button>
+  onClick={() => {
+    if (quote) {
+      setData((p) => ({
+        ...p,
+        prix_estime_ht: quote.prixEstimeHt,
+        prix_estime_ttc: quote.prixEstimeTtc,
+      }));
+      next();
+    }
+  }}
+  disabled={!quote}
+  size="lg"
+  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
+>
+  Accepter et continuer
+</Button>
+
           </div>
         </div>
       ),
@@ -1629,9 +1711,15 @@ export function CreateMandatWizard() {
           </div>
 
           <div className="flex justify-between items-center pt-6 border-t">
-            <Button variant="outline" onClick={back} size="lg">
-              Retour
-            </Button>
+            <Button
+  variant="outline"
+  onClick={back}
+  size="lg"
+  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+>
+  Retour
+</Button>
+
             <Button
               onClick={next}
               disabled={!signatureOk}
@@ -1675,10 +1763,17 @@ export function CreateMandatWizard() {
         <div className="px-8 py-4 flex items-center justify-between">
           {/* Left Side: Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span>Mes mandats</span>
+            <div className="flex items-center gap-2">
+   <img
+    src="/icons/file-lines.png"   // 👈 public folder ke liye correct path
+    alt="icon"
+    className="w-5 h-5 object-contain"
+  />Mes mandats
+</div>
+
             <ChevronRight size={16} />
             <span className="text-foreground font-medium">{current.label}</span>
-            <ChevronRight size={16} />
+            {/* <ChevronRight size={16} /> */}
           </div>
 
           {/* Right Side: Button + Avatar */}
@@ -1693,80 +1788,116 @@ export function CreateMandatWizard() {
             </Button>
 
             <div className="w-9 h-9 rounded-full overflow-hidden border">
-              <img
-                alt="avatar"
-                src={avatarSrc}
-                className="w-full h-full object-cover"
-              />
+             <img
+  alt="avatar"
+  src="/avatar.png"
+  className="w-full h-full object-cover"
+/>
+
             </div>
           </div>
         </div>
       </header>
 
       {/* Contenu principal avec sidebar et formulaire */}
+      
       <div className="flex flex-1 p-8 overflow-hidden">
         {/* Colonne latérale gauche fixe - Navigation des étapes */}
         <aside className="w-64 bg-[#F9FAFB] border-border p-[20px] flex flex-col overflow-auto rounded-lg">
           <div className="mb-6">
-            <h1 className="text-lg font-semibold mb-1">Créer un mandat</h1>
+            <h1 className="text-lg font-semibold mb-1" >Créer un mandat</h1>
             <p className="text-xs text-muted-foreground">
               Suivez les étapes pour publier votre demande de transport.
             </p>
           </div>
 
           {/* Liste des étapes verticale */}
-          <nav className="flex-1 space-y-1">
-            {steps.map((step, idx) => {
-              const isActive = idx === activeStep;
-              const isAccessible = idx <= activeStep;
-              const StepIcon = stepIcons[idx];
+ <nav className="flex-1 space-y-1">
+  {steps.map((step, idx) => {
+    const isActive = idx === activeStep;
+    const isCompleted = idx < activeStep;
+    const StepIcon = stepIcons[idx];
 
-              return (
-                <button
-                  key={step.label}
-                  onClick={() => isAccessible && setActiveStep(idx)}
-                  disabled={!isAccessible}
-                  className={`w-full flex items-center gap-3 px-3 py-2 text-left transition-colors rounded-md ${
-                    isActive
-                      ? "text-primary bg-primary/5"
-                      : isAccessible
-                      ? "text-foreground hover:bg-muted/50"
-                      : "text-muted-foreground/50 cursor-not-allowed"
-                  }`}
-                >
-                  <div className="flex-shrink-0">
-                    <StepIcon
-                      size={18}
-                      className={isActive ? "text-primary" : ""}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0 text-sm">{step.label}</div>
-                </button>
-              );
-            })}
-          </nav>
+    return (
+      <div key={idx} className="relative">
+        <button
+          onClick={() => idx <= activeStep && setActiveStep(idx)}
+          disabled={idx > activeStep}
+          className={`w-full flex items-center gap-3 px-3 py-2 text-left rounded-md transition-all duration-200 ${
+            isActive
+              ? "text-[#186BB0] bg-blue-50 font-semibold" // 🔵 active step (text blue)
+              : isCompleted
+              ? "text-black font-medium" // ✅ completed step (black text)
+              : "text-gray-400" // upcoming step (gray)
+          }`}
+        >
+          {/* ICON */}
+          <div className="flex-shrink-0">
+            {isCompleted ? (
+              <Check size={18} className="text-green-600 font-bold" />
+            ) : (
+              <StepIcon
+                size={18}
+                className={
+                  isActive
+                    ? "text-[#186BB0]" // 🔵 icon blue when active
+                    : "text-gray-400"
+                }
+              />
+            )}
+          </div>
+
+          {/* LABEL */}
+          <div
+            className={`flex-1 min-w-0 text-sm ${
+              isActive ? "text-[#186BB0]" : isCompleted ? "text-black" : ""
+            }`}
+          >
+            {step.label}
+          </div>
+        </button>
+
+        {/* Divider line between steps */}
+        {idx < steps.length - 1 && (
+          <div className="ml-4 h-4 w-px bg-gray-300"></div>
+        )}
+      </div>
+    );
+  })}
+</nav>
+
+
+
+
+
+
 
           {/* Footer avec progression */}
           <div className="mt-auto pt-4">
-            <div className="bg-[#0E406A] rounded-lg p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-medium text-white">
-                  {activeStep}/{steps.length} étape(s)
-                </span>
-                <span className="text-xs font-medium text-white">
-                  {Math.round((activeStep / steps.length) * 100)}%
-                </span>
-              </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary transition-all duration-300"
-                  style={{
-                    width: `${(activeStep / steps.length) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+  <div className="bg-[#0E406A] rounded-lg p-3">
+    <div className="flex items-center justify-between mb-2">
+      <span className="text-xs font-medium text-white">
+        {activeStep}/{steps.length} étape(s)
+      </span>
+      <span className="text-xs font-medium text-white">
+        {Math.round((activeStep / steps.length) * 100)}%
+      </span>
+    </div>
+
+    {/* Progress bar */}
+    <div className="h-2 bg-[#13568D] rounded-full overflow-hidden">
+
+      <div
+        className="h-full bg-white transition-all duration-300"
+        style={{
+          width: `${(activeStep / steps.length) * 100}%`,
+        }}
+      />
+    </div>
+  </div>
+</div>
+
+              
         </aside>
 
         {/* Zone droite - Formulaire */}
@@ -1783,11 +1914,14 @@ export function CreateMandatWizard() {
       </div>
 
       {/*Footer collé en bas de la page */}
-      <footer className="border-t border-border py-4 text-sm text-muted-foreground flex items-center justify-center gap-6">
-        <p>© 2025 Revers0. Tous droits réservés.</p>
-        <p>Mentions légales</p>
-        <p>Support</p>
-      </footer>
+      <footer className="border-t border-border py-6 px-8 text-sm text-muted-foreground flex items-center justify-between">
+  <p>© 2025 Revers0. Tous droits réservés.</p>
+  <div className="flex items-center gap-8">
+    <p>Mentions légales</p>
+    <p>Support</p>
+  </div>
+</footer>
+
     </div>
   );
 }
