@@ -48,18 +48,20 @@ export function DateTimeInput({
     <div className={cn("space-y-3", className)}>
       {/* Input principal datetime-local */}
       <div className="relative">
+        {/* Icon on the left */}
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+          <Calendar className="h-4 w-4" />
+        </div>
+
+        {/* Input with left padding to make space for the icon */}
         <Input
           type="datetime-local"
           value={value}
           onChange={handleDateTimeChange}
-          className="pr-10"
+          className="pl-10" // space for icon
           min={new Date().toISOString().slice(0, 16)}
+          placeholder="Select date and time"
         />
-
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-          <Calendar className="h-4 w-4 text-muted-foreground" />
-          <Clock className="h-4 w-4 text-muted-foreground" />
-        </div>
       </div>
 
       {/* Affichage formaté */}

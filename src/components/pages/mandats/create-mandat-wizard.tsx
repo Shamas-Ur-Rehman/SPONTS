@@ -8,6 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
+import { FiAlertCircle } from "react-icons/fi";
+import { MdOutlineCalendarMonth } from "react-icons/md";
+import { LuUpload } from "react-icons/lu";
+
 import {
   Plus,
   RefreshCw,
@@ -36,6 +40,8 @@ import { ImageUploadZone } from "./image-upload/image-upload-zone";
 import { AddressInput } from "./address-input/address-input";
 import { DateTimeInput } from "./date-time-input";
 import { FormStepper, Step } from "@/components/forms/FormStepper";
+import { IoDocumentTextOutline } from "react-icons/io5";
+
 import {
   ChevronRight,
   FileText,
@@ -274,17 +280,18 @@ export function CreateMandatWizard() {
     return (
       <div className="space-y-8">
         <div>
-          <h2 className="text-2xl font-bold mb-2 text-color :#111827">Créez un mandat</h2>
-          <p style={{ color: '#6A7282' }}>
-  Commencez par les informations principales.
-</p>
-
+          <h2 className="text-2xl font-bold mb-2 text-color :#111827">
+            Créez un mandat
+          </h2>
+          <p style={{ color: "#6A7282" }}>
+            Commencez par les informations principales.
+          </p>
         </div>
 
         {/* Nom */}
         <div className="space-y-2">
           <Label htmlFor="nom" className="text-sm font-medium">
-            Nom du mandat  <span style={{ color: '#C70036' }}>*</span>
+            Nom du mandat <span style={{ color: "#C70036" }}>*</span>
           </Label>
           <Input
             id="nom"
@@ -300,18 +307,18 @@ export function CreateMandatWizard() {
         {/* Description */}
         <div className="space-y-2">
           <Label htmlFor="description" className="text-sm font-medium">
-            Description <span style={{ color: '#C70036' }}>*</span>
+            Description <span style={{ color: "#C70036" }}>*</span>
           </Label>
           <Textarea
-  id="description"
-  value={data.description}
-  minLength={10}
-  rows={4}
-  placeholder="Décrivez la marchandise et les besoins spécifiques"
-  onChange={(e) => handleChange("description", e.target.value)}
-  required
-  className="resize-none text-[#6A7282] bg-[#F9FAFB] border-[#E5E7EB]"
-/>
+            id="description"
+            value={data.description}
+            minLength={10}
+            rows={4}
+            placeholder="Décrivez la marchandise et les besoins spécifiques"
+            onChange={(e) => handleChange("description", e.target.value)}
+            required
+            className="resize-none text-[#6A7282] bg-[#F9FAFB] border-[#E5E7EB]"
+          />
 
           <p className="text-xs text-muted-foreground">
             {data.description.trim().length}/10 caractères minimum
@@ -329,26 +336,22 @@ export function CreateMandatWizard() {
 
         {/* Navigation custom */}
         <div className="flex justify-between items-center pt-6">
-       <Button
-  variant="outline"
-  onClick={goNext}
-  disabled
-  className="bg-[#F3F4F6] text-[#64686e] border border-[#E5E7EB]"
->
-  ← Retour
-</Button>
+          <Button
+            variant="outline"
+            onClick={goNext}
+            disabled
+            className="bg-[#F3F4F6] text-[#64686e] border border-[#E5E7EB]"
+          >
+            ← Retour
+          </Button>
 
-
-      <Button
-  onClick={goNext}
-  disabled={!isValid}
-  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
->
-  Continuer
-</Button>
-
-
-
+          <Button
+            onClick={goNext}
+            disabled={!isValid}
+            className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+          >
+            Continuer
+          </Button>
         </div>
       </div>
     );
@@ -427,41 +430,31 @@ export function CreateMandatWizard() {
 
       <div className="space-y-6">
         {/* Adresse complète */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-  Adresse complète <span style={{ color: '#C70036' }}>*</span>
-   
-</Label>
-
-          <AddressInput
-            value={data.depart_adresse}
-            placeholder="Entrez adresse"
-            onChange={(val) => {
-              setData((p) => ({ ...p, depart_adresse: val as any }));
-
-              // Extraire les composants de l'adresse si disponibles
-              if (val && (val as any).details) {
-                const components = extractAddressComponents(
-                  (val as any).details
-                );
-                setData((p) => ({
-                  ...p,
-                  depart_pays: components.country || p.depart_pays,
-                  depart_canton: components.canton || "",
-                  depart_ville: components.ville || "",
-                  depart_code_postal: components.codePostal || "",
-                }));
-              }
-            }}
-            
-          />
-          
-        </div>
+        <AddressInput
+          value={data.depart_adresse}
+          placeholder="Entrez adresse"
+          hideIcon // 👈 hides the location icon
+          onChange={(val) => {
+            setData((p) => ({ ...p, depart_adresse: val as any }));
+            if (val && (val as any).details) {
+              const components = extractAddressComponents((val as any).details);
+              setData((p) => ({
+                ...p,
+                depart_pays: components.country || p.depart_pays,
+                depart_canton: components.canton || "",
+                depart_ville: components.ville || "",
+                depart_code_postal: components.codePostal || "",
+              }));
+            }
+          }}
+        />
 
         {/* Pays et Canton/région */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Pays <span style={{ color: '#C70036' }}>*</span></Label>
+            <Label className="text-sm font-medium">
+              Pays <span style={{ color: "#C70036" }}>*</span>
+            </Label>
             <Select
               value={data.depart_pays}
               onValueChange={(value) =>
@@ -480,51 +473,52 @@ export function CreateMandatWizard() {
               </SelectContent>
             </Select>
           </div>
-        <div className="space-y-2">
-  <Label className="text-sm font-medium">
-    Canton / région <span style={{ color: '#C70036' }}>*</span>
-  </Label>
-  <select
-    value={data.depart_canton}
-    onChange={(e) =>
-      setData((p) => ({ ...p, depart_canton: e.target.value }))
-    }
-    className="h-10 w-full border border-gray-300 rounded-md px-2"
-  >
-    <option value="">Sélectionnez votre canton / région</option>
-    <option value="Geneve">Genève</option>
-    <option value="Vaud">Vaud</option>
-    <option value="Zurich">Zurich</option>
-    <option value="Bern">Bern</option>
-    {/* Add more cantons/regions as needed */}
-  </select>
-</div>
-
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Canton / région <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <select
+              value={data.depart_canton}
+              onChange={(e) =>
+                setData((p) => ({ ...p, depart_canton: e.target.value }))
+              }
+              className="h-10 w-full border border-gray-300 rounded-md px-2"
+            >
+              <option value="">Sélectionnez votre canton / région</option>
+              <option value="Geneve">Genève</option>
+              <option value="Vaud">Vaud</option>
+              <option value="Zurich">Zurich</option>
+              <option value="Bern">Bern</option>
+              {/* Add more cantons/regions as needed */}
+            </select>
+          </div>
         </div>
 
         {/* Ville et Code postal */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-           <Label className="text-sm font-medium">
-  Votre ville <span style={{ color: '#C70036' }}>*</span>
-</Label>
-<select
-  value={data.depart_ville}
-  onChange={(e) =>
-    setData((p) => ({ ...p, depart_ville: e.target.value }))
-  }
-  className="h-10 w-full border border-gray-300 rounded-md px-2"
->
-  <option value="">Sélectionnez la ville</option>
-  <option value="Geneve">Genève</option>
-  <option value="Vaud">Vaud</option>
-  <option value="Zurich">Zurich</option>
-  <option value="Bern">Bern</option>
-  {/* Add more cities as needed */}
-</select>
+            <Label className="text-sm font-medium">
+              Votre ville <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <select
+              value={data.depart_ville}
+              onChange={(e) =>
+                setData((p) => ({ ...p, depart_ville: e.target.value }))
+              }
+              className="h-10 w-full border border-gray-300 rounded-md px-2"
+            >
+              <option value="">Sélectionnez la ville</option>
+              <option value="Geneve">Genève</option>
+              <option value="Vaud">Vaud</option>
+              <option value="Zurich">Zurich</option>
+              <option value="Bern">Bern</option>
+              {/* Add more cities as needed */}
+            </select>
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Code postal <span style={{ color: '#C70036' }}>*</span></Label>
+            <Label className="text-sm font-medium">
+              Code postal <span style={{ color: "#C70036" }}>*</span>
+            </Label>
             <Input
               value={data.depart_code_postal}
               placeholder="Entrez le code postal"
@@ -539,7 +533,9 @@ export function CreateMandatWizard() {
         {/* Contact */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Nom du contact <span style={{ color: '#C70036' }}>*</span></Label>
+            <Label className="text-sm font-medium">
+              Nom du contact <span style={{ color: "#C70036" }}>*</span>
+            </Label>
             <Input
               value={data.depart_contact ?? ""}
               placeholder="Personne à contacter sur place"
@@ -551,7 +547,7 @@ export function CreateMandatWizard() {
           </div>
           <div className="space-y-2">
             <Label className="text-sm font-medium">
-              Téléphone du contact <span style={{ color: '#C70036' }}>*</span>
+              Téléphone du contact <span style={{ color: "#C70036" }}>*</span>
             </Label>
             <Input
               value={data.depart_telephone}
@@ -585,21 +581,20 @@ export function CreateMandatWizard() {
       {/* Navigation */}
       <div className="flex justify-between items-center pt-6">
         <Button
-  variant="outline"
-  onClick={goBack}
-  className="bg-[#F3F4F6] text-[#70757c] border border-[#E5E7EB]"
->
-  ← Retour
-</Button>
+          variant="outline"
+          onClick={goBack}
+          className="bg-[#F3F4F6] text-[#70757c] border border-[#E5E7EB]"
+        >
+          ← Retour
+        </Button>
 
-       <Button
-  onClick={() => setAddressSubStep(1)}
-  disabled={!data.depart_adresse.adresse.trim()}
-  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
->
-  Continuer 
-</Button>
-
+        <Button
+          onClick={() => setAddressSubStep(1)}
+          disabled={!data.depart_adresse.adresse.trim()}
+          className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+        >
+          Continuer
+        </Button>
       </div>
     </div>
   );
@@ -616,7 +611,9 @@ export function CreateMandatWizard() {
       <div className="space-y-6">
         {/* Adresse complète */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium">Adresse complète <span style={{ color: '#C70036' }}>*</span></Label>
+          <Label className="text-sm font-medium">
+            Adresse complète <span style={{ color: "#C70036" }}>*</span>
+          </Label>
           <AddressInput
             value={data.arrivee_adresse}
             placeholder="Entrez adresse"
@@ -643,7 +640,9 @@ export function CreateMandatWizard() {
         {/* Pays et Canton/région */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Pays <span style={{ color: '#C70036' }}>*</span></Label>
+            <Label className="text-sm font-medium">
+              Pays <span style={{ color: "#C70036" }}>*</span>
+            </Label>
             <Select
               value={data.arrivee_pays}
               onValueChange={(value) =>
@@ -663,7 +662,9 @@ export function CreateMandatWizard() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">État/province <span style={{ color: '#C70036' }}>*</span></Label>
+            <Label className="text-sm font-medium">
+              État/province <span style={{ color: "#C70036" }}>*</span>
+            </Label>
             <Input
               value={data.arrivee_canton}
               placeholder="Sélectionnez le canton / région"
@@ -679,28 +680,28 @@ export function CreateMandatWizard() {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label className="text-sm font-medium">
-  Votre ville <span style={{ color: '#C70036' }}>*</span>
-</Label>
-<select
-  value={data.depart_ville}
-  onChange={(e) =>
-    setData((p) => ({ ...p, depart_ville: e.target.value }))
-  }
-  className="h-10 w-full border border-gray-300 rounded-md px-2"
-  style={{ color: '#6A7282' }}
->
-  <option value="">Sélectionnez la ville</option>
-  <option value="Geneve">Genève</option>
-  <option value="Vaud">Vaud</option>
-  <option value="Zurich">Zurich</option>
-  <option value="Bern">Bern</option>
-  {/* Add more cities as needed */}
-</select>
-
-
+              Votre ville <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <select
+              value={data.depart_ville}
+              onChange={(e) =>
+                setData((p) => ({ ...p, depart_ville: e.target.value }))
+              }
+              className="h-10 w-full border border-gray-300 rounded-md px-2"
+              style={{ color: "#6A7282" }}
+            >
+              <option value="">Sélectionnez la ville</option>
+              <option value="Geneve">Genève</option>
+              <option value="Vaud">Vaud</option>
+              <option value="Zurich">Zurich</option>
+              <option value="Bern">Bern</option>
+              {/* Add more cities as needed */}
+            </select>
           </div>
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Code postal <span style={{ color: '#C70036' }}>*</span></Label>
+            <Label className="text-sm font-medium">
+              Code postal <span style={{ color: "#C70036" }}>*</span>
+            </Label>
             <Input
               value={data.arrivee_code_postal}
               placeholder="Entrez le code postal"
@@ -715,7 +716,9 @@ export function CreateMandatWizard() {
         {/* Contact */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Nom du contact<span style={{ color: '#C70036' }}>*</span> </Label>
+            <Label className="text-sm font-medium">
+              Nom du contact<span style={{ color: "#C70036" }}>*</span>{" "}
+            </Label>
             <Input
               value={data.arrivee_contact ?? ""}
               placeholder="Personne à contacter sur place"
@@ -727,7 +730,7 @@ export function CreateMandatWizard() {
           </div>
           <div className="space-y-2">
             <Label className="text-sm font-medium">
-              Téléphone du contact <span style={{ color: '#C70036' }}>*</span> 
+              Téléphone du contact <span style={{ color: "#C70036" }}>*</span>
             </Label>
             <Input
               value={data.arrivee_telephone}
@@ -760,23 +763,21 @@ export function CreateMandatWizard() {
 
       {/* Navigation */}
       <div className="flex justify-between items-center pt-6">
-     <Button
-  variant="outline"
-  onClick={() => setAddressSubStep(0)}
-  className="bg-[#F3F4F6] text-[#888d95] border border-[#E5E7EB]"
->
-  ← Retour
-</Button>
+        <Button
+          variant="outline"
+          onClick={() => setAddressSubStep(0)}
+          className="bg-[#F3F4F6] text-[#888d95] border border-[#E5E7EB]"
+        >
+          ← Retour
+        </Button>
 
-      <Button
-  onClick={goNext}
-  disabled={!data.arrivee_adresse.adresse.trim()}
-  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
->
-  Continuer
-</Button>
-
-
+        <Button
+          onClick={goNext}
+          disabled={!data.arrivee_adresse.adresse.trim()}
+          className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+        >
+          Continuer
+        </Button>
       </div>
     </div>
   );
@@ -792,207 +793,212 @@ export function CreateMandatWizard() {
         </p>
       </div>
 
-   <div className="space-y-6">
-  {/* Type de marchandise et Poids */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">
-        Type de marchandise <span style={{ color: '#C70036' }}>*</span>
-      </Label>
-      <Select
-        value={data.type_marchandise ?? ""}
-        onValueChange={(value) =>
-          setData((p) => ({
-            ...p,
-            type_marchandise: value as TypeMarchandise,
-          }))
-        }
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Sélectionnez le type de marchandise" />
-        </SelectTrigger>
-        <SelectContent>
-          {Object.values(TypeMarchandise).map((v) => (
-            <SelectItem key={v} value={v}>
-              {v}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+      <div className="space-y-6">
+        {/* Type de marchandise et Poids */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Type de marchandise <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.type_marchandise ?? ""}
+              onValueChange={(value) =>
+                setData((p) => ({
+                  ...p,
+                  type_marchandise: value as TypeMarchandise,
+                }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue
+                  placeholder="Sélectionnez le type de marchandise"
+                  className="h-10 text-[#6A7282] bg-[#F9FAFB]"
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(TypeMarchandise).map((v) => (
+                  <SelectItem key={v} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">
-        Poids total (kg) <span style={{ color: '#C70036' }}>*</span>
-      </Label>
-      <Input
-        type="number"
-        min="0.1"
-        step="0.01"
-        value={data.poids_total_kg}
-        placeholder="Min 0.1"
-        onChange={(e) =>
-          setData((p) => ({
-            ...p,
-            poids_total_kg: Number(e.target.value),
-          }))
-        }
-        className="h-10"
-      />
-    </div>
-  </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Poids total (kg) <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              type="number"
+              min="0.1"
+              step="0.01"
+              value={data.poids_total_kg}
+              placeholder="Min 0.1"
+              onChange={(e) =>
+                setData((p) => ({
+                  ...p,
+                  poids_total_kg: Number(e.target.value),
+                }))
+              }
+              className="h-10"
+            />
+          </div>
+        </div>
 
-  {/* Volume et Nombre de colis */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">
-        Volume total (m³) <span style={{ color: '#C70036' }}>*</span>
-      </Label>
-      <Input
-        type="number"
-        min="0.01"
-        step="0.01"
-        value={data.volume_total_m3}
-        placeholder="Min 0.01"
-        onChange={(e) =>
-          setData((p) => ({
-            ...p,
-            volume_total_m3: Number(e.target.value),
-          }))
-        }
-        className="h-10"
-      />
-    </div>
+        {/* Volume et Nombre de colis */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Volume total (m³) <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              type="number"
+              min="0.01"
+              step="0.01"
+              value={data.volume_total_m3}
+              placeholder="Min 0.01"
+              onChange={(e) =>
+                setData((p) => ({
+                  ...p,
+                  volume_total_m3: Number(e.target.value),
+                }))
+              }
+              className="h-10"
+            />
+          </div>
 
-    <div className="space-y-2">
-       <Label className="text-sm font-medium">Nombre de colis</Label>
-      <Input
-        type="text"
-        value={data.acces_autre ?? ""}
-        placeholder=" Indiquez le nombre total de colis"
-        onChange={(e) =>
-          setData((p) => ({ ...p, acces_autre: e.target.value }))
-        }
-        className="h-10"
-      />
-    </div>
-  </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Nombre de colis</Label>
+            <Input
+              type="text"
+              value={data.acces_autre ?? ""}
+              placeholder=" Indiquez le nombre total de colis"
+              onChange={(e) =>
+                setData((p) => ({ ...p, acces_autre: e.target.value }))
+              }
+              className="h-10"
+            />
+          </div>
+        </div>
 
-  {/* Type de véhicule et Accès au site */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">
-        Type de véhicule requis <span style={{ color: '#C70036' }}>*</span>
-      </Label>
-      <Select
-        value={data.type_vehicule ?? ""}
-        onValueChange={(value) =>
-          setData((p) => ({
-            ...p,
-            type_vehicule: value as TypeVehicule,
-          }))
-        }
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Sélectionnez le véhicule adapté" />
-        </SelectTrigger>
-        <SelectContent>
-          {Object.values(TypeVehicule).map((v) => (
-            <SelectItem key={v} value={v}>
-              {v}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+        {/* Type de véhicule et Accès au site */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Type de véhicule requis{" "}
+              <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.type_vehicule ?? ""}
+              onValueChange={(value) =>
+                setData((p) => ({
+                  ...p,
+                  type_vehicule: value as TypeVehicule,
+                }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez le véhicule adapté" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(TypeVehicule).map((v) => (
+                  <SelectItem key={v} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">
-        Accès au site <span style={{ color: '#C70036' }}>*</span>
-      </Label>
-      <Select
-        value={data.type_acces ?? ""}
-        onValueChange={(value) =>
-          setData((p) => ({
-            ...p,
-            type_acces: value as TypeAcces,
-          }))
-        }
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Sélectionnez les conditions d'accès" />
-        </SelectTrigger>
-        <SelectContent>
-          {Object.values(TypeAcces).map((v) => (
-            <SelectItem key={v} value={v}>
-              {v}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Accès au site <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.type_acces ?? ""}
+              onValueChange={(value) =>
+                setData((p) => ({
+                  ...p,
+                  type_acces: value as TypeAcces,
+                }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez les conditions d'accès" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(TypeAcces).map((v) => (
+                  <SelectItem key={v} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
 
-  {/* Moyen de chargement et Précisez l'accès */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">
-        Moyen de chargement <span style={{ color: '#C70036' }}>*</span>
-      </Label>
-      <Select
-        value={data.moyen_chargement ?? ""}
-        onValueChange={(value) =>
-          setData((p) => ({
-            ...p,
-            moyen_chargement: value as MoyenChargement,
-          }))
-        }
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Sélectionnez le mode de chargement" />
-        </SelectTrigger>
-        <SelectContent>
-          {Object.values(MoyenChargement).map((v) => (
-            <SelectItem key={v} value={v}>
-              {v}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+        {/* Moyen de chargement et Précisez l'accès */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Moyen de chargement <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.moyen_chargement ?? ""}
+              onValueChange={(value) =>
+                setData((p) => ({
+                  ...p,
+                  moyen_chargement: value as MoyenChargement,
+                }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez le mode de chargement" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(MoyenChargement).map((v) => (
+                  <SelectItem key={v} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-    <div className="space-y-2">
-      <Label className="text-sm font-medium">Précisez l'accès (si "autre")</Label>
-      <Input
-        type="text"
-        value={data.acces_autre ?? ""}
-        placeholder="Décrivez les contraintes spécifiques"
-        onChange={(e) =>
-          setData((p) => ({ ...p, acces_autre: e.target.value }))
-        }
-        className="h-10"
-      />
-    </div>
-  </div>
-</div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Précisez l'accès (si "autre")
+            </Label>
+            <Input
+              type="text"
+              value={data.acces_autre ?? ""}
+              placeholder="Décrivez les contraintes spécifiques"
+              onChange={(e) =>
+                setData((p) => ({ ...p, acces_autre: e.target.value }))
+              }
+              className="h-10"
+            />
+          </div>
+        </div>
+      </div>
       {/* Navigation */}
       <div className="flex justify-between items-center pt-6">
         <Button
-  variant="outline"
-  onClick={goBack}
-  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB]"
->
-  ← Retour
-</Button>
+          variant="outline"
+          onClick={goBack}
+          className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB]"
+        >
+          ← Retour
+        </Button>
 
-       <Button
-  onClick={() => setMerchandiseSubStep(1)}
-  disabled={data.poids_total_kg < 0.1}
-  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
->
-  Continuer 
-</Button>
-
+        <Button
+          onClick={() => setMerchandiseSubStep(1)}
+          disabled={data.poids_total_kg < 0.1}
+          className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+        >
+          Continuer
+        </Button>
       </div>
     </div>
   );
@@ -1050,7 +1056,8 @@ export function CreateMandatWizard() {
                 htmlFor="sensi_temperature"
                 className="text-sm font-medium cursor-pointer"
               >
-                Sensibilité à la température
+                Sensibilité à la température{" "}
+                <span style={{ color: "#C70036" }}>*</span>
               </Label>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -1067,7 +1074,8 @@ export function CreateMandatWizard() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
-                      Température min (°C) <span style={{ color: '#C70036' }}>*</span>
+                      Température min (°C){" "}
+                      <span style={{ color: "#C70036" }}>*</span>
                     </Label>
                     <Input
                       type="number"
@@ -1079,12 +1087,13 @@ export function CreateMandatWizard() {
                           temperature_min_c: Number(e.target.value),
                         }))
                       }
-                      className="h-10"
+                      className="h-10 text-[#6A7282] bg-[#F9FAFB]"
                     />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
-                      Température max (°C) <span style={{ color: '#C70036' }}>*</span>
+                      Température max (°C){" "}
+                      <span style={{ color: "#C70036" }}>*</span>
                     </Label>
                     <Input
                       type="number"
@@ -1096,14 +1105,14 @@ export function CreateMandatWizard() {
                           temperature_max_c: Number(e.target.value),
                         }))
                       }
-                      className="h-10"
+                      className="h-10 text-[#6A7282] bg-[#F9FAFB]"
                     />
                   </div>
                 </div>
               </div>
             )}
           </div>
-
+          <hr className="my-6 border-t border-gray-200" />
           {/* Marchandise dangereuse */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -1120,7 +1129,8 @@ export function CreateMandatWizard() {
                 htmlFor="matiere_dangereuse"
                 className="text-sm font-medium cursor-pointer"
               >
-                Marchandise dangereuse (ADR)
+                Marchandise dangereuse (ADR){" "}
+                <span style={{ color: "#C70036" }}>*</span>
               </Label>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -1139,7 +1149,9 @@ export function CreateMandatWizard() {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium">Classe ADR <span style={{ color: '#C70036' }}>*</span></Label>
+                    <Label className="text-sm font-medium">
+                      Classe ADR <span style={{ color: "#C70036" }}>*</span>
+                    </Label>
                     <Select
                       value={data.adr_classe?.toString() ?? ""}
                       onValueChange={(value) =>
@@ -1150,7 +1162,10 @@ export function CreateMandatWizard() {
                       }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Sélectionner" />
+                        <SelectValue
+                          placeholder="Sélectionner"
+                          className="text-[#6A7282] bg-[#F9FAFB]"
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {Array.from({ length: 9 }, (_, i) => i + 1).map((n) => (
@@ -1162,40 +1177,42 @@ export function CreateMandatWizard() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium">N° ONU <span style={{ color: '#C70036' }}>*</span></Label>
+                    <Label className="text-sm font-medium">
+                      N° ONU <span style={{ color: "#C70036" }}>*</span>
+                    </Label>
                     <Input
                       placeholder="1234"
                       value={data.adr_uno ?? ""}
                       onChange={(e) =>
                         setData((p) => ({ ...p, adr_uno: e.target.value }))
                       }
-                      className="h-10"
+                      className="h-10 text-[#6A7282] bg-[#F9FAFB]"
                     />
                   </div>
                 </div>
               </div>
             )}
           </div>
+          <hr className="my-6 border-t border-gray-200" />
         </div>
 
         {/* Navigation */}
         <div className="flex justify-between items-center pt-6">
-        <Button
-  variant="outline"
-  onClick={() => setMerchandiseSubStep(0)}
-  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
->
-  ← Retour
-</Button>
+          <Button
+            variant="outline"
+            onClick={() => setMerchandiseSubStep(0)}
+            className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+          >
+            ← Retour
+          </Button>
 
-<Button
-  onClick={goNext}
-  disabled={!data.arrivee_adresse?.adresse?.trim()}
-  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
->
-  Continuer
-</Button>
-
+          <Button
+            onClick={goNext}
+            disabled={!data.arrivee_adresse?.adresse?.trim()}
+            className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+          >
+            Continuer
+          </Button>
         </div>
       </div>
     </TooltipProvider>
@@ -1205,27 +1222,21 @@ export function CreateMandatWizard() {
   const stepIcons = [
     FileText,
     MapPin,
-    Clock,
+    MdOutlineCalendarMonth,
     Package,
     ClipboardCheck,
-    DollarSign,
+    IoDocumentTextOutline,
     PenTool,
   ];
 
- const steps: Step[] = [
-  {
-     label: (
-  <span className="text-[#186BB0] font-semibold">
-    Créer un mandat
-  </span>
-),
-
-
-    description: "Informations principales du mandat",
-    content: (next) => Step1(next),
-    isValid: () =>
-      data.nom.trim().length > 0 && data.description.trim().length >= 10,
-  },
+  const steps: Step[] = [
+    {
+      label: "Créer un mandat",
+      description: "Informations principales du mandat",
+      content: (next) => Step1(next),
+      isValid: () =>
+        data.nom.trim().length > 0 && data.description.trim().length >= 10,
+    },
 
     {
       label: "Adresse",
@@ -1268,9 +1279,24 @@ export function CreateMandatWizard() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-medium">
-                  Enlèvement souhaité — début <span style={{ color: '#C70036' }}>*</span>
+                  Enlèvement souhaité — début{" "}
+                  <span style={{ color: "#C70036" }}>*</span>
                 </Label>
-                <DateTimeInput
+                <div className="relative">
+                  <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  <Input
+                    value={data.enlevement_souhaite_debut_at}
+                    placeholder="Sélectionnez la date de départ souhaitée"
+                    onChange={(e) =>
+                      setData((p) => ({
+                        ...p,
+                        enlevement_souhaite_debut_at: e.target.value,
+                      }))
+                    }
+                    className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                  />
+                </div>
+                {/* <DateTimeInput
                   value={data.enlevement_souhaite_debut_at}
                   onChange={(val) =>
                     setData((p) => ({
@@ -1278,37 +1304,65 @@ export function CreateMandatWizard() {
                       enlevement_souhaite_debut_at: val,
                     }))
                   }
-                />
-                <p className="text-xs text-muted-foreground">
                   
-                </p>
+                /> */}
+
+                <p className="text-xs text-muted-foreground"></p>
               </div>
               <div className="space-y-2">
                 <Label className="text-sm font-medium">
-                  Enlèvement souhaité — fin <span style={{ color: '#C70036' }}>*</span>
+                  Enlèvement souhaité — fin{" "}
+                  <span style={{ color: "#C70036" }}>*</span>
                 </Label>
-                <DateTimeInput
+                <div className="relative">
+                  <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  <Input
+                    type="text"
+                    value={data.enlevement_souhaite_fin_at}
+                    placeholder="Jusqu’à quelle date le retrait peut avoir lieu"
+                    onChange={(e) =>
+                      setData((p) => ({
+                        ...p,
+                        enlevement_souhaite_fin_at: e.target.value,
+                      }))
+                    }
+                    className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                  />
+                </div>
+
+                {/* <DateTimeInput
                   value={data.enlevement_souhaite_fin_at}
                   onChange={(val) =>
                     setData((p) => ({ ...p, enlevement_souhaite_fin_at: val }))
                   }
-                />
-                <p className="text-xs text-muted-foreground">
-                 
-                </p>
+                /> */}
+                {/* <p className="text-xs text-muted-foreground"></p> */}
               </div>
             </div>
           </div>
 
           {/* Deadline max enlèvement */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Deadline max enlèvement</h3>
-
-            <div className="space-y-2">
+          <div>
+            <div>
               <Label className="text-sm font-medium">
                 Deadline max enlèvement
               </Label>
-              <DateTimeInput
+              <div className="relative">
+                <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Input
+                  type="text"
+                  value={data.enlevement_max_at || ""}
+                  placeholder="Dernier jour possible pour le retrait"
+                  onChange={(e) =>
+                    setData((p) => ({
+                      ...p,
+                      enlevement_max_at: e.target.value,
+                    }))
+                  }
+                  className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                />
+              </div>
+              {/* <DateTimeInput
                 value={data.enlevement_max_at || ""}
                 onChange={(val) =>
                   setData((p) => ({
@@ -1316,23 +1370,35 @@ export function CreateMandatWizard() {
                     enlevement_max_at: val,
                   }))
                 }
-              />
-              <p className="text-xs text-muted-foreground">
-               
-              </p>
+              /> */}
+              <p className="text-xs text-muted-foreground"></p>
             </div>
           </div>
 
           {/* Livraison prévue */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Livraison prévue</h3>
-
+          <div className="">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-medium">
-                  Livraison prévue — début <span style={{ color: '#C70036' }}>*</span>
+                  Livraison prévue — début{" "}
+                  <span style={{ color: "#C70036" }}>*</span>
                 </Label>
-                <DateTimeInput
+                <div className="relative">
+                  <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  <Input
+                    type="text"
+                    value={data.livraison_prevue_debut_at || ""}
+                    placeholder="Date prévue de livraison"
+                    onChange={(e) =>
+                      setData((p) => ({
+                        ...p,
+                        livraison_prevue_debut_at: e.target.value,
+                      }))
+                    }
+                    className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                  />
+                </div>
+                {/* <DateTimeInput
                   value={data.livraison_prevue_debut_at || ""}
                   onChange={(val) =>
                     setData((p) => ({
@@ -1340,16 +1406,30 @@ export function CreateMandatWizard() {
                       livraison_prevue_debut_at: val,
                     }))
                   }
-                />
-                <p className="text-xs text-muted-foreground">
-                  
-                </p>
+                /> */}
+                <p className="text-xs text-muted-foreground"></p>
               </div>
               <div className="space-y-2">
                 <Label className="text-sm font-medium">
-                  Livraison prévue — fin <span style={{ color: '#C70036' }}>*</span>
+                  Livraison prévue — fin{" "}
+                  <span style={{ color: "#C70036" }}>*</span>
                 </Label>
-                <DateTimeInput
+                <div className="relative">
+                  <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  <Input
+                    type="text"
+                    value={data.livraison_prevue_fin_at || ""}
+                    placeholder="Dernier jour possible pour la livraison"
+                    onChange={(e) =>
+                      setData((p) => ({
+                        ...p,
+                        livraison_prevue_fin_at: e.target.value,
+                      }))
+                    }
+                    className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                  />
+                </div>
+                {/* <DateTimeInput
                   value={data.livraison_prevue_fin_at || ""}
                   onChange={(val) =>
                     setData((p) => ({
@@ -1357,10 +1437,8 @@ export function CreateMandatWizard() {
                       livraison_prevue_fin_at: val,
                     }))
                   }
-                />
-                <p className="text-xs text-muted-foreground">
-                  
-                </p>
+                /> */}
+                <p className="text-xs text-muted-foreground"></p>
               </div>
             </div>
           </div>
@@ -1368,10 +1446,10 @@ export function CreateMandatWizard() {
           {/* Message d'information */}
           <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
             <p className="text-sm text-[#0E406A] flex items-start gap-2">
-              <span className="text-[#0E406A]">ℹ️</span>
-
+              <FiAlertCircle className="w-4 h-4" />
               Les horaires exacts pourront être confirmés avec le transporteur
-              après la mise en relation.<span style={{ color: '#C70036' }}>*</span>
+              après la mise en relation.
+              <span style={{ color: "#C70036" }}>*</span>
             </p>
           </div>
 
@@ -1398,28 +1476,27 @@ export function CreateMandatWizard() {
 
           <div className="flex justify-between items-center pt-6 border-t">
             <Button
-  variant="outline"
-  onClick={back}
-  size="lg"
-  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
->
-  ← Retour
-</Button>
+              variant="outline"
+              onClick={back}
+              size="lg"
+              className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+            >
+              ← Retour
+            </Button>
 
-           <Button
-  onClick={next}
-  disabled={
-    !data.enlevement_souhaite_debut_at ||
-    !data.enlevement_souhaite_fin_at ||
-    new Date(data.enlevement_souhaite_debut_at) >=
-      new Date(data.enlevement_souhaite_fin_at)
-  }
-  size="lg"
-  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
->
-  Continuer 
-</Button>
-
+            <Button
+              onClick={next}
+              disabled={
+                !data.enlevement_souhaite_debut_at ||
+                !data.enlevement_souhaite_fin_at ||
+                new Date(data.enlevement_souhaite_debut_at) >=
+                  new Date(data.enlevement_souhaite_fin_at)
+              }
+              size="lg"
+              className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
+            >
+              Continuer
+            </Button>
           </div>
         </div>
       ),
@@ -1451,191 +1528,229 @@ export function CreateMandatWizard() {
   ];
 
   // Inject new steps after ceux existants
-steps.push(
-  {
-    label: "Proposition tarifaire",
-    description: "Vérifiez les détails avant de confirmer l'envoi du mandat.",
-    content: (next, back) => (
-      <div className="space-y-8">
-        {/* Header */}
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-[#111827]">Proposition tarifaire</h2>
-          <p className="text-sm text-[#6B7280]">Vérifiez les détails avant de confirmer l'envoi du mandat.</p>
-        </div>
-
-        <div className="p-6 rounded-lg bg-[#F9FAFB] space-y-6">
-          {/* Conditions d'expédition */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-sm text-[#6B7280]">Conditions d'expédition</h4>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-[#6B7280]">Distance calculée</span>
-                <span className="text-sm font-medium text-[#111827]">{data.distance_km?.toFixed(0) || 'XX'} km</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-[#6B7280]">Surface facturable</span>
-                <span className="text-sm font-medium text-[#111827]">{data.surface_m2 || 'XX'} m²</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-[#6B7280]">Supplément carburant</span>
-                <span className="text-sm font-medium text-[#111827]">XXXX</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-[#6B7280]">Autres paramètres</span>
-                <span className="text-sm font-medium text-[#111827]">XXXX</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Détails des frais */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-sm text-[#6B7280]">Détails des frais</h4>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-[#6B7280]">Prix estimé HT</span>
-                <span className="text-sm font-medium text-[#111827]">{quote?.prixEstimeHt?.toFixed(2) || 'XX'} m²</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-[#6B7280]">TVA</span>
-                <span className="text-sm font-medium text-[#111827]">XX %</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Prix estimé TTC */}
-          <div className="pt-4 border-t border-[#E5E7EB]">
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-semibold text-[#111827]">Prix estimé TTC</span>
-              <span className="text-sm font-bold text-[#111827]">CHF {quote?.prixEstimeTtc?.toFixed(0) || 'XXX'}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center pt-6 border-t">
-          <Button
-            variant="outline"
-            onClick={back}
-            size="lg"
-            className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
-          >
-            ←Retour
-          </Button>
-
-          <Button
-            onClick={next}
-            size="lg"
-            className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
-          >
-            Continuer
-          </Button>
-        </div>
-      </div>
-    ),
-    isValid: () => true,
-  },
-{
-  label: "Pièces jointes et remarques",
-  description: "Estimation du coût",
-  content: (next, back) => (
-    <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h2 className="text-xl font-semibold text-gray-800">
-          Pièces jointes et remarques
-        </h2>
-        <p className="text-gray-500 text-sm">
-          Ajoutez les documents nécessaires et précisez les informations utiles au transporteur.
-        </p>
-      </div>
-
-      {/* File upload section */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">
-          Ajouter des documents — BL, CMR, etc.
-        </label>
-
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100 transition">
-          <div className="flex flex-col items-center space-y-2">
-            {/* 🔹 Custom upload image instead of SVG */}
-            <img
-              src="/upload.png"
-              alt="Upload"
-              className="w-12 h-12 object-contain opacity-70"
-            />
-
-            <p className="text-sm text-gray-500">
-              Glissez vos fichiers ici ou cliquez pour le téléverser.
+  steps.push(
+    {
+      label: "Proposition tarifaire",
+      description: "Vérifiez les détails avant de confirmer l'envoi du mandat.",
+      content: (next, back) => (
+        <div className="space-y-8">
+          {/* Header */}
+          <div className="space-y-2">
+            <h2 className="text-xl font-semibold text-[#111827]">
+              Proposition tarifaire
+            </h2>
+            <p className="text-sm text-[#6B7280]">
+              Vérifiez les détails avant de confirmer l'envoi du mandat.
             </p>
-            <p className="text-xs text-gray-400">(Taille maximale : 30 Mo)</p>
+          </div>
 
-            <input
-              type="file"
-              id="fileUpload"
-              className="hidden"
-              onChange={(e) => console.log(e.target.files[0])}
-            />
+          <div className="">
+            {/* Conditions d'expédition */}
+            <div className="p-6 rounded-lg bg-[#F9FAFB] space-y-6">
+              <h4 className="font-semibold text-sm text-[#4A5565]">
+                Conditions d'expédition
+              </h4>
 
-            <label
-              htmlFor="fileUpload"
-              className="mt-3 px-4 py-2 bg-[#186BB0] text-white rounded-md hover:bg-[#145a96] transition cursor-pointer"
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-[#6B7280]">
+                    Distance calculée
+                  </span>
+                  <span className="text-sm font-medium text-[#111827]">
+                    {data.distance_km?.toFixed(0) || "XX"} km
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-[#6B7280]">
+                    Surface facturable
+                  </span>
+                  <span className="text-sm font-medium text-[#111827]">
+                    {data.surface_m2 || "XX"} m²
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-[#6B7280]">
+                    Supplément carburant
+                  </span>
+                  <span className="text-sm font-medium text-[#111827]">
+                    XXXX
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-[#6B7280]">
+                    Autres paramètres
+                  </span>
+                  <span className="text-sm font-medium text-[#111827]">
+                    XXXX
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Détails des frais */}
+            <div className="p-6 rounded-lg bg-[#F9FAFB] space-y-6 mt-6">
+              <h4 className="font-semibold text-sm text-[#4A5565]">
+                Détails des frais
+              </h4>
+
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-[#6B7280]">Prix estimé HT</span>
+                  <span className="text-sm font-medium text-[#111827]">
+                    {quote?.prixEstimeHt?.toFixed(2) || "XX"} m²
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-[#6B7280]">TVA</span>
+                  <span className="text-sm font-medium text-[#111827]">
+                    XX %
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Prix estimé TTC */}
+            <div className="p-6 rounded-lg bg-[#F9FAFB] space-y-6 mt-6 ">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-semibold text-[#101828]">
+                  Prix estimé TTC
+                </span>
+                <span className="text-sm font-bold text-[#101828]">
+                  CHF {quote?.prixEstimeTtc?.toFixed(0) || "XXX"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center pt-6 ">
+            <Button
+              variant="outline"
+              onClick={back}
+              size="lg"
+              className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
             >
-              + Ajouter un fichier
-            </label>
+              ←Retour
+            </Button>
+
+            <Button
+              onClick={next}
+              size="lg"
+              className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
+            >
+              Continuer
+            </Button>
           </div>
         </div>
-      </div>
+      ),
+      isValid: () => true,
+    },
+    {
+      label: "Pièces jointes et remarques",
+      description: "Estimation du coût",
+      content: (next, back) => (
+        <div className="space-y-8">
+          {/* Header */}
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Pièces jointes et remarques
+            </h2>
+            <p className="text-gray-500 text-sm">
+              Ajoutez les documents nécessaires et précisez les informations
+              utiles au transporteur.
+            </p>
+          </div>
 
-      {/* Comment section */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">
-          Commentaire expéditeur <span className="text-[#C70036]">*</span>
-        </label>
-        <textarea
-          placeholder="Infos pratiques, accès, consignes particulières…"
-          rows={3}
-          className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#186BB0] focus:border-transparent resize-none"
-        />
-      </div>
+          {/* File upload section */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">
+              Ajouter des documents — BL, CMR, etc.
+            </label>
 
-      {/* Footer buttons */}
-      <div className="flex justify-between items-center pt-6 border-t">
-        <Button
-          variant="outline"
-          onClick={back}
-          size="lg"
-          className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
-        >
-          ← Retour
-        </Button>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100 transition">
+              <div className="flex flex-col items-center space-y-2">
+                {/* 🔹 Custom upload image instead of SVG */}
+                {/* <img
+                  src="/upload.png"
+                  alt="Upload"
+                  className="w-12 h-12 object-contain opacity-70"
+                /> */}
+                <LuUpload className="w-12 h-12 text-[#6A7282] object-contain opacity-70" />
 
-        <Button
-          onClick={() => {
-            if (quote) {
-              setData((p) => ({
-                ...p,
-                prix_estime_ht: quote.prixEstimeHt,
-                prix_estime_ttc: quote.prixEstimeTtc,
-              }));
-              next();
-            }
-          }}
-          disabled={!quote}
-          size="lg"
-          className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
-        >
-          Valider le mandat
-        </Button>
-      </div>
-    </div>
-  ),
-  isValid: () => !!quote,
-}, 
+                <p className="text-sm text-[#6A7282]">
+                  Glissez vos fichiers ici ou cliquez pour le téléverser.
+                </p>
+                <p className="text-xs text-[#6A7282]">
+                  (Taille maximale : 30 Mo)
+                </p>
 
+                <input
+                  type="file"
+                  id="fileUpload"
+                  className="hidden"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      console.log(e.target.files[0]);
+                    }
+                  }}
+                />
 
+                <label
+                  htmlFor="fileUpload"
+                  className="mt-3 px-4 py-2 bg-[#186BB0] text-white rounded-md hover:bg-[#145a96] transition cursor-pointer"
+                >
+                  + Ajouter un fichier
+                </label>
+              </div>
+            </div>
+          </div>
 
- {
+          {/* Comment section */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">
+              Commentaire expéditeur <span className="text-[#C70036]">*</span>
+            </label>
+            <textarea
+              placeholder="Infos pratiques, accès, consignes particulières…"
+              rows={3}
+              className="w-full border border-gray-300 text-[#6A7282] bg-[#F9FAFB] rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#186BB0] focus:border-transparent resize-none"
+            />
+          </div>
+
+          {/* Footer buttons */}
+          <div className="flex justify-between items-center pt-6">
+            <Button
+              variant="outline"
+              onClick={back}
+              size="lg"
+              className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+            >
+              ← Retour
+            </Button>
+
+            <Button
+              onClick={() => {
+                if (quote) {
+                  setData((p) => ({
+                    ...p,
+                    prix_estime_ht: quote.prixEstimeHt,
+                    prix_estime_ttc: quote.prixEstimeTtc,
+                  }));
+                  next();
+                }
+              }}
+              disabled={!quote}
+              size="lg"
+              className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
+            >
+              Valider le mandat
+            </Button>
+          </div>
+        </div>
+      ),
+      isValid: () => !!quote,
+    },
+
+    {
       label: "Signature du document",
       description: "Confirmez et publiez",
       content: (next, back) => (
@@ -1670,15 +1785,14 @@ steps.push(
               <img
                 src="/Votre Nom Here.png"
                 alt="Signature"
-                className="mx-auto w-[260px] object-contain"
+                className="mx-auto w-[260px] h-[100px] object-contain"
               />
             </div>
-
-            <div className="relative h-8 bg-gray-200 rounded-full overflow-hidden">
-              <div className="absolute left-0 top-0 h-full bg-[#45c4b0] w-[70%] rounded-full" />
-              <p className="absolute inset-0 flex items-center justify-center text-xs text-gray-600">
-               
-              </p>
+            <div className="border border-gray-300 rounded-lg p-6 bg-gray-50 text-center">
+              <div className="relative h-8 bg-gray-200 rounded-full overflow-hidden">
+                <div className="absolute left-0 top-0 h-full bg-[#45c4b0] w-[70%] rounded-full" />
+                <p className="absolute inset-0 flex items-center justify-center text-xs text-gray-600"></p>
+              </div>
             </div>
           </div>
 
@@ -1719,14 +1833,14 @@ steps.push(
               size="lg"
               className="bg-[#186BB0] text-white hover:bg-[#145a96] min-w-[200px]"
             >
-              Publier le mandat
+              Signer
             </Button>
           </div>
         </div>
       ),
       isValid: () => Boolean(signatureOk),
-    },
-);
+    }
+  );
   /* ---------------- Soumission finale ---------------- */
   const handleSubmit = async () => {
     console.log("🚀 [handleSubmit] Début de la soumission du mandat");
@@ -1756,12 +1870,13 @@ steps.push(
           {/* Left Side: Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-   <img
-    src="/icons/file-lines.png"   // 👈 public folder ke liye correct path
-    alt="icon"
-    className="w-5 h-5 object-contain"
-  />Mes mandats
-</div>
+              <img
+                src="/icons/file-lines.png" // 👈 public folder ke liye correct path
+                alt="icon"
+                className="w-5 h-5 object-contain"
+              />
+              Mes mandats
+            </div>
 
             <ChevronRight size={16} />
             <span className="text-foreground font-medium">{current.label}</span>
@@ -1780,116 +1895,122 @@ steps.push(
             </Button>
 
             <div className="w-9 h-9 rounded-full overflow-hidden border">
-             <img
-  alt="avatar"
-  src="/avatar.png"
-  className="w-full h-full object-cover"
-/>
-
+              <img
+                alt="avatar"
+                src="/avatar.png"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
       </header>
 
       {/* Contenu principal avec sidebar et formulaire */}
-      
+
       <div className="flex flex-1 p-8 overflow-hidden">
         {/* Colonne latérale gauche fixe - Navigation des étapes */}
         <aside className="w-64 bg-[#F9FAFB] border-border p-[20px] flex flex-col overflow-auto rounded-lg">
           <div className="mb-6">
-            <h1 className="text-lg font-semibold mb-1" >Créer un mandat</h1>
+            <h1 className="text-lg font-semibold mb-1">Créer un mandat</h1>
             <p className="text-xs text-muted-foreground">
               Suivez les étapes pour publier votre demande de transport.
             </p>
           </div>
 
           {/* Liste des étapes verticale */}
- <nav className="flex-1 space-y-1">
-  {steps.map((step, idx) => {
-    const isActive = idx === activeStep;
-    const isCompleted = idx < activeStep;
-    const StepIcon = stepIcons[idx];
+          <nav className="flex-1 space-y-1">
+            {steps.map((step, idx) => {
+              const isActive = idx === activeStep;
+              const isCompleted = idx < activeStep;
+              const StepIcon = stepIcons[idx];
 
-    return (
-      <div key={idx} className="relative">
-        <button
-          onClick={() => idx <= activeStep && setActiveStep(idx)}
-          disabled={idx > activeStep}
-          className={`w-full flex items-center gap-3 px-3 py-2 text-left rounded-md transition-all duration-200 ${
-            isActive
-              ? "text-[#186BB0] bg-blue-50 font-semibold" // 🔵 active step (text blue)
-              : isCompleted
-              ? "text-black font-medium" // ✅ completed step (black text)
-              : "text-gray-400" // upcoming step (gray)
-          }`}
-        >
-          {/* ICON */}
-          <div className="flex-shrink-0">
-            {isCompleted ? (
-              <Check size={18} className="text-green-600 font-bold" />
-            ) : (
-              <StepIcon
-                size={18}
-                className={
-                  isActive
-                    ? "text-[#186BB0]" // 🔵 icon blue when active
-                    : "text-gray-400"
-                }
-              />
-            )}
-          </div>
+              return (
+                <div key={idx} className="relative">
+                  <button
+                    onClick={() => idx <= activeStep && setActiveStep(idx)}
+                    disabled={idx > activeStep}
+                    className={`w-full flex items-center gap-3 px-3 py-2 text-left rounded-md transition-all duration-200 ${
+                      isActive
+                        ? "text-[#186BB0]  font-semibold" // 🔵 active step (text blue)
+                        : isCompleted
+                        ? "text-black font-medium" // ✅ completed step (black text)
+                        : "text-gray-400" // upcoming step (gray)
+                    }`}
+                  >
+                    {/* ICON */}
+                    <div className="flex-shrink-0">
+                      <div
+                        className={`flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-200 
+                          ${
+                            isCompleted
+                              ? "bg-[#DCFCE7]" // ✅ green for completed
+                              : isActive
+                              ? "bg-[#E4EEF7]" // 🔵 blue for active
+                              : "bg-[#F3F4F6]" // ⚪ gray for inactive
+                          }`}
+                      >
+                        {isCompleted ? (
+                          <Check
+                            size={18}
+                            className="text-[#00A63E] font-bold"
+                          />
+                        ) : (
+                          <StepIcon
+                            size={18}
+                            className={
+                              isActive ? "text-[#186BB0]" : "text-gray-400"
+                            }
+                          />
+                        )}
+                      </div>
+                    </div>
 
-          {/* LABEL */}
-          <div
-            className={`flex-1 min-w-0 text-sm ${
-              isActive ? "text-[#186BB0]" : isCompleted ? "text-black" : ""
-            }`}
-          >
-            {step.label}
-          </div>
-        </button>
+                    {/* LABEL */}
+                    <div
+                      className={`flex-1 min-w-0 text-sm ${
+                        isActive
+                          ? "text-[#186BB0]"
+                          : isCompleted
+                          ? "text-black"
+                          : ""
+                      }`}
+                    >
+                      {step.label}
+                    </div>
+                  </button>
 
-        {/* Divider line between steps */}
-        {idx < steps.length - 1 && (
-          <div className="ml-4 h-4 w-px bg-gray-300"></div>
-        )}
-      </div>
-    );
-  })}
-</nav>
-
-
-
-
-
-
+                  {/* Divider line between steps */}
+                  {idx < steps.length - 1 && (
+                    <div className="absolute left-[28px] top-11 h-6 w-[1px] bg-[#E5E7EB]"></div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
 
           {/* Footer avec progression */}
           <div className="mt-auto pt-4">
-  <div className="bg-[#0E406A] rounded-lg p-3">
-    <div className="flex items-center justify-between mb-2">
-      <span className="text-xs font-medium text-white">
-        {activeStep}/{steps.length} étape(s)
-      </span>
-      <span className="text-xs font-medium text-white">
-        {Math.round((activeStep / steps.length) * 100)}%
-      </span>
-    </div>
+            <div className="bg-[#0E406A] rounded-lg p-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-medium text-white">
+                  {activeStep}/{steps.length} étape(s)
+                </span>
+                <span className="text-xs font-medium text-white">
+                  {Math.round((activeStep / steps.length) * 100)}%
+                </span>
+              </div>
 
-    {/* Progress bar */}
-    <div className="h-2 bg-[#13568D] rounded-full overflow-hidden">
-
-      <div
-        className="h-full bg-white transition-all duration-300"
-        style={{
-          width: `${(activeStep / steps.length) * 100}%`,
-        }}
-      />
-    </div>
-  </div>
-</div>
-
-              
+              {/* Progress bar */}
+              <div className="h-2 bg-[#13568D] rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-white transition-all duration-300"
+                  style={{
+                    width: `${(activeStep / steps.length) * 100}%`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </aside>
 
         {/* Zone droite - Formulaire */}
@@ -1907,13 +2028,12 @@ steps.push(
 
       {/*Footer collé en bas de la page */}
       <footer className="border-t border-border py-6 px-8 text-sm text-muted-foreground flex items-center justify-between">
-  <p>© 2025 Revers0. Tous droits réservés.</p>
-  <div className="flex items-center gap-8">
-    <p>Mentions légales</p>
-    <p>Support</p>
-  </div>
-</footer>
-
+        <p>© 2025 Revers0. Tous droits réservés.</p>
+        <div className="flex items-center gap-8">
+          <p>Mentions légales</p>
+          <p>Support</p>
+        </div>
+      </footer>
     </div>
   );
 }

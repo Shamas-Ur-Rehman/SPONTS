@@ -12,6 +12,7 @@ interface AddressInputProps {
   onChange: (address: AddressData & { details?: any }) => void;
   className?: string;
   showMap?: boolean;
+  hideIcon?: boolean; // 👈 add this line
 }
 
 interface GooglePlace {
