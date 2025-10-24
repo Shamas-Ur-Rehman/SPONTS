@@ -430,6 +430,7 @@ export function CreateMandatWizard() {
         <div className="space-y-2">
           <Label className="text-sm font-medium">
   Adresse complète <span style={{ color: '#C70036' }}>*</span>
+   
 </Label>
 
           <AddressInput
@@ -452,7 +453,9 @@ export function CreateMandatWizard() {
                 }));
               }
             }}
+            
           />
+          
         </div>
 
         {/* Pays et Canton/région */}
@@ -477,31 +480,48 @@ export function CreateMandatWizard() {
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Canton / région <span style={{ color: '#C70036' }}>*</span></Label>
-            <Input
-              value={data.depart_canton}
-              placeholder="Sélectionnez votre canton / région"
-              onChange={(e) =>
-                setData((p) => ({ ...p, depart_canton: e.target.value }))
-              }
-              className="h-10"
-            />
-          </div>
+        <div className="space-y-2">
+  <Label className="text-sm font-medium">
+    Canton / région <span style={{ color: '#C70036' }}>*</span>
+  </Label>
+  <select
+    value={data.depart_canton}
+    onChange={(e) =>
+      setData((p) => ({ ...p, depart_canton: e.target.value }))
+    }
+    className="h-10 w-full border border-gray-300 rounded-md px-2"
+  >
+    <option value="">Sélectionnez votre canton / région</option>
+    <option value="Geneve">Genève</option>
+    <option value="Vaud">Vaud</option>
+    <option value="Zurich">Zurich</option>
+    <option value="Bern">Bern</option>
+    {/* Add more cantons/regions as needed */}
+  </select>
+</div>
+
         </div>
 
         {/* Ville et Code postal */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Votre ville <span style={{ color: '#C70036' }}>*</span></Label>
-            <Input
-              value={data.depart_ville}
-              placeholder="Sélectionnez la ville"
-              onChange={(e) =>
-                setData((p) => ({ ...p, depart_ville: e.target.value }))
-              }
-              className="h-10"
-            />
+           <Label className="text-sm font-medium">
+  Votre ville <span style={{ color: '#C70036' }}>*</span>
+</Label>
+<select
+  value={data.depart_ville}
+  onChange={(e) =>
+    setData((p) => ({ ...p, depart_ville: e.target.value }))
+  }
+  className="h-10 w-full border border-gray-300 rounded-md px-2"
+>
+  <option value="">Sélectionnez la ville</option>
+  <option value="Geneve">Genève</option>
+  <option value="Vaud">Vaud</option>
+  <option value="Zurich">Zurich</option>
+  <option value="Bern">Bern</option>
+  {/* Add more cities as needed */}
+</select>
           </div>
           <div className="space-y-2">
             <Label className="text-sm font-medium">Code postal <span style={{ color: '#C70036' }}>*</span></Label>
@@ -658,15 +678,26 @@ export function CreateMandatWizard() {
         {/* Ville et Code postal */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium">Votre ville <span style={{ color: '#C70036' }}>*</span></Label>
-            <Input
-              value={data.arrivee_ville}
-              placeholder="Sélectionnez la ville"
-              onChange={(e) =>
-                setData((p) => ({ ...p, arrivee_ville: e.target.value }))
-              }
-              className="h-10"
-            />
+            <Label className="text-sm font-medium">
+  Votre ville <span style={{ color: '#C70036' }}>*</span>
+</Label>
+<select
+  value={data.depart_ville}
+  onChange={(e) =>
+    setData((p) => ({ ...p, depart_ville: e.target.value }))
+  }
+  className="h-10 w-full border border-gray-300 rounded-md px-2"
+  style={{ color: '#6A7282' }}
+>
+  <option value="">Sélectionnez la ville</option>
+  <option value="Geneve">Genève</option>
+  <option value="Vaud">Vaud</option>
+  <option value="Zurich">Zurich</option>
+  <option value="Bern">Bern</option>
+  {/* Add more cities as needed */}
+</select>
+
+
           </div>
           <div className="space-y-2">
             <Label className="text-sm font-medium">Code postal <span style={{ color: '#C70036' }}>*</span></Label>
@@ -742,8 +773,9 @@ export function CreateMandatWizard() {
   disabled={!data.arrivee_adresse.adresse.trim()}
   className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
 >
-  Continuer →
+  Continuer
 </Button>
+
 
       </div>
     </div>
@@ -760,202 +792,189 @@ export function CreateMandatWizard() {
         </p>
       </div>
 
-      <div className="space-y-6">
-        {/* Type de marchandise */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Type de marchandise <span style={{ color: '#C70036' }}>*</span></Label>
-          <Select
-            value={data.type_marchandise ?? ""}
-            onValueChange={(value) =>
-              setData((p) => ({
-                ...p,
-                type_marchandise: value as TypeMarchandise,
-              }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionnez le type de marchandise" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(TypeMarchandise).map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+   <div className="space-y-6">
+  {/* Type de marchandise et Poids */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">
+        Type de marchandise <span style={{ color: '#C70036' }}>*</span>
+      </Label>
+      <Select
+        value={data.type_marchandise ?? ""}
+        onValueChange={(value) =>
+          setData((p) => ({
+            ...p,
+            type_marchandise: value as TypeMarchandise,
+          }))
+        }
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Sélectionnez le type de marchandise" />
+        </SelectTrigger>
+        <SelectContent>
+          {Object.values(TypeMarchandise).map((v) => (
+            <SelectItem key={v} value={v}>
+              {v}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
 
-        {/* Poids et Volume */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Poids total (kg) <span style={{ color: '#C70036' }}>*</span></Label>
-            <Input
-              type="number"
-              min="0.1"
-              step="0.01"
-              value={data.poids_total_kg}
-              placeholder="Min 0.1"
-              onChange={(e) =>
-                setData((p) => ({
-                  ...p,
-                  poids_total_kg: Number(e.target.value),
-                }))
-              }
-              className="h-10"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Volume total (m³) <span style={{ color: '#C70036' }}>*</span></Label>
-            <Input
-              type="number"
-              min="0.01"
-              step="0.01"
-              value={data.volume_total_m3}
-              placeholder="Min 0.01"
-              onChange={(e) =>
-                setData((p) => ({
-                  ...p,
-                  volume_total_m3: Number(e.target.value),
-                }))
-              }
-              className="h-10"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Surface (m²) <span style={{ color: '#C70036' }}>*</span></Label>
-            <Input
-              type="number"
-              min="0.01"
-              step="0.01"
-              value={data.surface_m2}
-              placeholder="Min 0.01"
-              onChange={(e) =>
-                setData((p) => ({
-                  ...p,
-                  surface_m2: Number(e.target.value),
-                }))
-              }
-              className="h-10"
-            />
-          </div>
-        </div>
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">
+        Poids total (kg) <span style={{ color: '#C70036' }}>*</span>
+      </Label>
+      <Input
+        type="number"
+        min="0.1"
+        step="0.01"
+        value={data.poids_total_kg}
+        placeholder="Min 0.1"
+        onChange={(e) =>
+          setData((p) => ({
+            ...p,
+            poids_total_kg: Number(e.target.value),
+          }))
+        }
+        className="h-10"
+      />
+    </div>
+  </div>
 
-        {/* Nombre de colis */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Nombre de colis</Label>
-          <Input
-            type="number"
-            min="0"
-            step="1"
-            value={data.nombre_colis ?? 0}
-            placeholder="Indiquez le nombre total de colis"
-            onChange={(e) =>
-              setData((p) => ({
-                ...p,
-                nombre_colis: Number(e.target.value),
-              }))
-            }
-            className="h-10"
-          />
-        </div>
+  {/* Volume et Nombre de colis */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">
+        Volume total (m³) <span style={{ color: '#C70036' }}>*</span>
+      </Label>
+      <Input
+        type="number"
+        min="0.01"
+        step="0.01"
+        value={data.volume_total_m3}
+        placeholder="Min 0.01"
+        onChange={(e) =>
+          setData((p) => ({
+            ...p,
+            volume_total_m3: Number(e.target.value),
+          }))
+        }
+        className="h-10"
+      />
+    </div>
 
-        {/* Type de véhicule requis */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Type de véhicule requis *
-          </Label>
-          <Select
-            value={data.type_vehicule ?? ""}
-            onValueChange={(value) =>
-              setData((p) => ({
-                ...p,
-                type_vehicule: value as TypeVehicule,
-              }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionnez le véhicule adapté" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(TypeVehicule).map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="space-y-2">
+       <Label className="text-sm font-medium">Nombre de colis</Label>
+      <Input
+        type="text"
+        value={data.acces_autre ?? ""}
+        placeholder=" Indiquez le nombre total de colis"
+        onChange={(e) =>
+          setData((p) => ({ ...p, acces_autre: e.target.value }))
+        }
+        className="h-10"
+      />
+    </div>
+  </div>
 
-        {/* Accès au site */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Accès au site <span style={{ color: '#C70036' }}>*</span></Label>
-          <Select
-            value={data.type_acces ?? ""}
-            onValueChange={(value) =>
-              setData((p) => ({
-                ...p,
-                type_acces: value as TypeAcces,
-              }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionnez les conditions d'accès" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(TypeAcces).map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+  {/* Type de véhicule et Accès au site */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">
+        Type de véhicule requis <span style={{ color: '#C70036' }}>*</span>
+      </Label>
+      <Select
+        value={data.type_vehicule ?? ""}
+        onValueChange={(value) =>
+          setData((p) => ({
+            ...p,
+            type_vehicule: value as TypeVehicule,
+          }))
+        }
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Sélectionnez le véhicule adapté" />
+        </SelectTrigger>
+        <SelectContent>
+          {Object.values(TypeVehicule).map((v) => (
+            <SelectItem key={v} value={v}>
+              {v}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
 
-        {/* Moyen de chargement */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Moyen de chargement <span style={{ color: '#C70036' }}>*</span></Label>
-          <Select
-            value={data.moyen_chargement ?? ""}
-            onValueChange={(value) =>
-              setData((p) => ({
-                ...p,
-                moyen_chargement: value as MoyenChargement,
-              }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionnez le mode de chargement" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(MoyenChargement).map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">
+        Accès au site <span style={{ color: '#C70036' }}>*</span>
+      </Label>
+      <Select
+        value={data.type_acces ?? ""}
+        onValueChange={(value) =>
+          setData((p) => ({
+            ...p,
+            type_acces: value as TypeAcces,
+          }))
+        }
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Sélectionnez les conditions d'accès" />
+        </SelectTrigger>
+        <SelectContent>
+          {Object.values(TypeAcces).map((v) => (
+            <SelectItem key={v} value={v}>
+              {v}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  </div>
 
-        {/* Préciser l'accès si "autre" */}
-        {data.type_acces === TypeAcces.Autre && (
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">
-              Précisez l'accès (si "autre") <span style={{ color: '#C70036' }}>*</span>
-            </Label>
-            <Textarea
-              value={data.acces_autre ?? ""}
-              placeholder="Décrivez les contraintes spécifiques"
-              rows={3}
-              onChange={(e) =>
-                setData((p) => ({ ...p, acces_autre: e.target.value }))
-              }
-              className="resize-none"
-            />
-          </div>
-        )}
-      </div>
+  {/* Moyen de chargement et Précisez l'accès */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">
+        Moyen de chargement <span style={{ color: '#C70036' }}>*</span>
+      </Label>
+      <Select
+        value={data.moyen_chargement ?? ""}
+        onValueChange={(value) =>
+          setData((p) => ({
+            ...p,
+            moyen_chargement: value as MoyenChargement,
+          }))
+        }
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Sélectionnez le mode de chargement" />
+        </SelectTrigger>
+        <SelectContent>
+          {Object.values(MoyenChargement).map((v) => (
+            <SelectItem key={v} value={v}>
+              {v}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
 
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">Précisez l'accès (si "autre")</Label>
+      <Input
+        type="text"
+        value={data.acces_autre ?? ""}
+        placeholder="Décrivez les contraintes spécifiques"
+        onChange={(e) =>
+          setData((p) => ({ ...p, acces_autre: e.target.value }))
+        }
+        className="h-10"
+      />
+    </div>
+  </div>
+</div>
       {/* Navigation */}
       <div className="flex justify-between items-center pt-6">
         <Button
@@ -971,7 +990,7 @@ export function CreateMandatWizard() {
   disabled={data.poids_total_kg < 0.1}
   className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
 >
-  Continuer →
+  Continuer 
 </Button>
 
       </div>
@@ -1169,8 +1188,14 @@ export function CreateMandatWizard() {
   ← Retour
 </Button>
 
+<Button
+  onClick={goNext}
+  disabled={!data.arrivee_adresse?.adresse?.trim()}
+  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+>
+  Continuer
+</Button>
 
-          <Button onClick={goNext}>Continuer →</Button>
         </div>
       </div>
     </TooltipProvider>
@@ -1255,7 +1280,7 @@ export function CreateMandatWizard() {
                   }
                 />
                 <p className="text-xs text-muted-foreground">
-                  Sélectionnez la date de départ souhaitée
+                  
                 </p>
               </div>
               <div className="space-y-2">
@@ -1269,7 +1294,7 @@ export function CreateMandatWizard() {
                   }
                 />
                 <p className="text-xs text-muted-foreground">
-                  Jusqu'à quelle date cela peut avoir lieu
+                 
                 </p>
               </div>
             </div>
@@ -1293,7 +1318,7 @@ export function CreateMandatWizard() {
                 }
               />
               <p className="text-xs text-muted-foreground">
-                Dernier jour possible pour le retrait
+               
               </p>
             </div>
           </div>
@@ -1305,7 +1330,7 @@ export function CreateMandatWizard() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-medium">
-                  Livraison prévue — début *
+                  Livraison prévue — début <span style={{ color: '#C70036' }}>*</span>
                 </Label>
                 <DateTimeInput
                   value={data.livraison_prevue_debut_at || ""}
@@ -1317,12 +1342,12 @@ export function CreateMandatWizard() {
                   }
                 />
                 <p className="text-xs text-muted-foreground">
-                  Date prévue de livraison
+                  
                 </p>
               </div>
               <div className="space-y-2">
                 <Label className="text-sm font-medium">
-                  Livraison prévue — fin *
+                  Livraison prévue — fin <span style={{ color: '#C70036' }}>*</span>
                 </Label>
                 <DateTimeInput
                   value={data.livraison_prevue_fin_at || ""}
@@ -1334,7 +1359,7 @@ export function CreateMandatWizard() {
                   }
                 />
                 <p className="text-xs text-muted-foreground">
-                  Dernier jour possible pour la livraison
+                  
                 </p>
               </div>
             </div>
@@ -1392,7 +1417,7 @@ export function CreateMandatWizard() {
   size="lg"
   className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
 >
-  Continuer →
+  Continuer 
 </Button>
 
           </div>
@@ -1426,305 +1451,273 @@ export function CreateMandatWizard() {
   ];
 
   // Inject new steps after ceux existants
-  steps.push(
-    {
-      label: "Proposition tarifaire",
-      description: "Vérifiez vos informations",
-      content: (next, back) => (
-        <div className="space-y-8">
-          <div className="p-6 rounded-lg border bg-card space-y-6">
-            <h3 className="text-lg font-semibold">Résumé de votre mandat</h3>
+steps.push(
+  {
+    label: "Proposition tarifaire",
+    description: "Vérifiez les détails avant de confirmer l'envoi du mandat.",
+    content: (next, back) => (
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold text-[#111827]">Proposition tarifaire</h2>
+          <p className="text-sm text-[#6B7280]">Vérifiez les détails avant de confirmer l'envoi du mandat.</p>
+        </div>
 
-            <div className="space-y-4 divide-y">
-              {/* Général */}
-              <div className="space-y-2">
-                <h4 className="font-medium text-sm text-muted-foreground">
-                  Informations générales
-                </h4>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <span className="text-muted-foreground">Nom :</span>
-                  <span className="font-medium">{data.nom}</span>
-                  <span className="text-muted-foreground">Description :</span>
-                  <span className="font-medium">{data.description}</span>
-                  {data.images && data.images.length > 0 && (
-                    <>
-                      <span className="text-muted-foreground">Photos :</span>
-                      <span className="font-medium">
-                        {data.images.length} photo(s)
-                      </span>
-                    </>
-                  )}
-                </div>
+        <div className="p-6 rounded-lg bg-[#F9FAFB] space-y-6">
+          {/* Conditions d'expédition */}
+          <div className="space-y-4">
+            <h4 className="font-semibold text-sm text-[#6B7280]">Conditions d'expédition</h4>
+            
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-[#6B7280]">Distance calculée</span>
+                <span className="text-sm font-medium text-[#111827]">{data.distance_km?.toFixed(0) || 'XX'} km</span>
               </div>
-
-              {/* Adresses */}
-              <div className="space-y-2 pt-4">
-                <h4 className="font-medium text-sm text-muted-foreground">
-                  Itinéraire
-                </h4>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <span className="text-muted-foreground">Départ :</span>
-                  <span className="font-medium">
-                    {data.depart_adresse.adresse}
-                  </span>
-                  <span className="text-muted-foreground">Arrivée :</span>
-                  <span className="font-medium">
-                    {data.arrivee_adresse.adresse}
-                  </span>
-                  {data.distance_km && (
-                    <>
-                      <span className="text-muted-foreground">Distance :</span>
-                      <span className="font-medium">
-                        {data.distance_km.toFixed(1)} km
-                      </span>
-                    </>
-                  )}
-                </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-[#6B7280]">Surface facturable</span>
+                <span className="text-sm font-medium text-[#111827]">{data.surface_m2 || 'XX'} m²</span>
               </div>
-
-              {/* Horaires */}
-              <div className="space-y-2 pt-4">
-                <h4 className="font-medium text-sm text-muted-foreground">
-                  Horaires
-                </h4>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <span className="text-muted-foreground">Début :</span>
-                  <span className="font-medium">
-                    {new Date(data.enlevement_souhaite_debut_at).toLocaleString(
-                      "fr-FR"
-                    )}
-                  </span>
-                  <span className="text-muted-foreground">Fin :</span>
-                  <span className="font-medium">
-                    {new Date(data.enlevement_souhaite_fin_at).toLocaleString(
-                      "fr-FR"
-                    )}
-                  </span>
-                </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-[#6B7280]">Supplément carburant</span>
+                <span className="text-sm font-medium text-[#111827]">XXXX</span>
               </div>
-
-              {/* Marchandise */}
-              <div className="space-y-2 pt-4">
-                <h4 className="font-medium text-sm text-muted-foreground">
-                  Marchandise
-                </h4>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <span className="text-muted-foreground">Poids :</span>
-                  <span className="font-medium">{data.poids_total_kg} kg</span>
-                  <span className="text-muted-foreground">Surface :</span>
-                  <span className="font-medium">{data.surface_m2} m²</span>
-                  {data.nombre_colis && data.nombre_colis > 0 && (
-                    <>
-                      <span className="text-muted-foreground">Colis :</span>
-                      <span className="font-medium">{data.nombre_colis}</span>
-                    </>
-                  )}
-                  {data.type_marchandise && (
-                    <>
-                      <span className="text-muted-foreground">Type :</span>
-                      <span className="font-medium">
-                        {data.type_marchandise}
-                      </span>
-                    </>
-                  )}
-                </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-[#6B7280]">Autres paramètres</span>
+                <span className="text-sm font-medium text-[#111827]">XXXX</span>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-6 border-t">
-            <Button
-  variant="outline"
-  onClick={back}
-  size="lg"
-  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
->
-  Retour
-</Button>
-
-            <Button
-  onClick={next}
-  size="lg"
-  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
->
-  Continuer vers le devis
-</Button>
-
-          </div>
-        </div>
-      ),
-      isValid: () => true,
-    },
-    {
-      label: "Pièces jointes et remarques",
-      description: "Estimation du coût",
-      content: (next, back) => (
-        <div className="space-y-8">
-          {!quote ? (
-            <div className="p-12 text-center space-y-4">
-              <div className="animate-spin w-12 h-12 border-4 border-primary border-t-transparent rounded-full mx-auto" />
-              <p className="text-muted-foreground">Calcul du devis en cours…</p>
+          {/* Détails des frais */}
+          <div className="space-y-4">
+            <h4 className="font-semibold text-sm text-[#6B7280]">Détails des frais</h4>
+            
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-[#6B7280]">Prix estimé HT</span>
+                <span className="text-sm font-medium text-[#111827]">{quote?.prixEstimeHt?.toFixed(2) || 'XX'} m²</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-[#6B7280]">TVA</span>
+                <span className="text-sm font-medium text-[#111827]">XX %</span>
+              </div>
             </div>
-          ) : (
-            <>
-              <div className="p-6 rounded-lg border bg-card space-y-6">
-                <h3 className="text-lg font-semibold">Estimation de prix</h3>
+          </div>
 
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">
-                      Prix de base HT
-                    </span>
-                    <span className="font-medium">
-                      {quote.prixBaseHt.toFixed(2)} CHF
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">
-                      Coefficient de majoration
-                    </span>
-                    <span className="font-medium">
-                      ×{quote.coeffMaj.toFixed(3)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">
-                      Après majoration %
-                    </span>
-                    <span className="font-medium">
-                      {quote.prixApresPct.toFixed(2)} CHF
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">
-                      Après suppléments fixes
-                    </span>
-                    <span className="font-medium">
-                      {quote.prixApresFixes.toFixed(2)} CHF
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Après grue %</span>
-                    <span className="font-medium">
-                      {quote.prixApresGruePct.toFixed(2)} CHF
-                    </span>
-                  </div>
-
-                  <div className="h-px bg-border my-4" />
-
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold">Total HT</span>
-                    <span className="text-xl font-bold">
-                      {quote.prixEstimeHt.toFixed(2)} CHF
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-primary">
-                      Total TTC
-                    </span>
-                    <span className="text-2xl font-bold text-primary">
-                      {quote.prixEstimeTtc.toFixed(2)} CHF
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-sm text-muted-foreground">
-                  ℹ️ Ce devis est une estimation basée sur les informations
-                  fournies. Le prix final pourra être ajusté par les
-                  transporteurs en fonction des contraintes spécifiques.
-                </p>
-              </div>
-            </>
-          )}
-
-          <div className="flex justify-between items-center pt-6 border-t">
-           <Button
-  variant="outline"
-  onClick={back}
-  size="lg"
-  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
->
-  Retour
-</Button>
-
-            <Button
-  onClick={() => {
-    if (quote) {
-      setData((p) => ({
-        ...p,
-        prix_estime_ht: quote.prixEstimeHt,
-        prix_estime_ttc: quote.prixEstimeTtc,
-      }));
-      next();
-    }
-  }}
-  disabled={!quote}
-  size="lg"
-  className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
->
-  Accepter et continuer
-</Button>
-
+          {/* Prix estimé TTC */}
+          <div className="pt-4 border-t border-[#E5E7EB]">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-semibold text-[#111827]">Prix estimé TTC</span>
+              <span className="text-sm font-bold text-[#111827]">CHF {quote?.prixEstimeTtc?.toFixed(0) || 'XXX'}</span>
+            </div>
           </div>
         </div>
-      ),
-      isValid: () => !!quote,
-    },
-    {
+
+        <div className="flex justify-between items-center pt-6 border-t">
+          <Button
+            variant="outline"
+            onClick={back}
+            size="lg"
+            className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+          >
+            ←Retour
+          </Button>
+
+          <Button
+            onClick={next}
+            size="lg"
+            className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
+          >
+            Continuer
+          </Button>
+        </div>
+      </div>
+    ),
+    isValid: () => true,
+  },
+{
+  label: "Pièces jointes et remarques",
+  description: "Estimation du coût",
+  content: (next, back) => (
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
+        <h2 className="text-xl font-semibold text-gray-800">
+          Pièces jointes et remarques
+        </h2>
+        <p className="text-gray-500 text-sm">
+          Ajoutez les documents nécessaires et précisez les informations utiles au transporteur.
+        </p>
+      </div>
+
+      {/* File upload section */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">
+          Ajouter des documents — BL, CMR, etc.
+        </label>
+
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100 transition">
+          <div className="flex flex-col items-center space-y-2">
+            {/* 🔹 Custom upload image instead of SVG */}
+            <img
+              src="/upload.png"
+              alt="Upload"
+              className="w-12 h-12 object-contain opacity-70"
+            />
+
+            <p className="text-sm text-gray-500">
+              Glissez vos fichiers ici ou cliquez pour le téléverser.
+            </p>
+            <p className="text-xs text-gray-400">(Taille maximale : 30 Mo)</p>
+
+            <input
+              type="file"
+              id="fileUpload"
+              className="hidden"
+              onChange={(e) => console.log(e.target.files[0])}
+            />
+
+            <label
+              htmlFor="fileUpload"
+              className="mt-3 px-4 py-2 bg-[#186BB0] text-white rounded-md hover:bg-[#145a96] transition cursor-pointer"
+            >
+              + Ajouter un fichier
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {/* Comment section */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-700">
+          Commentaire expéditeur <span className="text-[#C70036]">*</span>
+        </label>
+        <textarea
+          placeholder="Infos pratiques, accès, consignes particulières…"
+          rows={3}
+          className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#186BB0] focus:border-transparent resize-none"
+        />
+      </div>
+
+      {/* Footer buttons */}
+      <div className="flex justify-between items-center pt-6 border-t">
+        <Button
+          variant="outline"
+          onClick={back}
+          size="lg"
+          className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
+        >
+          ← Retour
+        </Button>
+
+        <Button
+          onClick={() => {
+            if (quote) {
+              setData((p) => ({
+                ...p,
+                prix_estime_ht: quote.prixEstimeHt,
+                prix_estime_ttc: quote.prixEstimeTtc,
+              }));
+              next();
+            }
+          }}
+          disabled={!quote}
+          size="lg"
+          className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none rounded-md"
+        >
+          Valider le mandat
+        </Button>
+      </div>
+    </div>
+  ),
+  isValid: () => !!quote,
+}, 
+
+
+
+ {
       label: "Signature du document",
       description: "Confirmez et publiez",
       content: (next, back) => (
-        <div className="space-y-8">
-          <div className="p-6 rounded-lg border bg-card space-y-6">
-            <h3 className="text-lg font-semibold">Dernière étape</h3>
+        <div className="space-y-10">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Signature du document
+            </h2>
+            <p className="text-gray-500 text-sm">
+              Cette signature valide officiellement votre demande de transport.
+            </p>
+          </div>
 
-            <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                En publiant ce mandat, vous acceptez que les transporteurs
-                puissent le consulter et faire des offres. Vous serez notifié
-                lorsqu'un transporteur manifestera son intérêt.
-              </p>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">
+              Votre nom <span className="text-[#C70036]">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Doit correspondre au signataire autorisé."
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#186BB0]"
+            />
+          </div>
 
-              <div className="p-4 rounded-lg bg-muted/30 space-y-3">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="w-5 h-5 mt-0.5"
-                    checked={signatureOk}
-                    onChange={(e) => setSignatureOk(e.target.checked)}
-                  />
-                  <div className="flex-1 text-sm">
-                    <span className="font-medium">
-                      Je certifie l'exactitude des informations fournies
-                    </span>
-                    <p className="text-muted-foreground mt-1">
-                      Les informations que j'ai fournies sont exactes et
-                      complètes. Je comprends que toute information incorrecte
-                      peut entraîner des complications lors du transport.
-                    </p>
-                  </div>
-                </label>
-              </div>
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-gray-700">
+              Il ne vous reste plus qu’à signer !{" "}
+              <span className="text-[#C70036]">*</span>
+            </label>
+
+            <div className="border border-gray-300 rounded-lg p-6 bg-gray-50 text-center">
+              <img
+                src="/Votre Nom Here.png"
+                alt="Signature"
+                className="mx-auto w-[260px] object-contain"
+              />
             </div>
+
+            <div className="relative h-8 bg-gray-200 rounded-full overflow-hidden">
+              <div className="absolute left-0 top-0 h-full bg-[#45c4b0] w-[70%] rounded-full" />
+              <p className="absolute inset-0 flex items-center justify-center text-xs text-gray-600">
+               
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-lg bg-muted/30 space-y-3 border">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-5 h-5 mt-0.5"
+                checked={signatureOk}
+                onChange={(e) => setSignatureOk(e.target.checked)}
+              />
+              <div className="flex-1 text-sm">
+                <span className="font-medium">
+                  Je certifie l'exactitude des informations fournies
+                </span>
+                <p className="text-gray-500 mt-1 text-sm">
+                  Les informations que j'ai fournies sont exactes et complètes.
+                  Je comprends que toute information incorrecte peut entraîner
+                  des complications lors du transport.
+                </p>
+              </div>
+            </label>
           </div>
 
           <div className="flex justify-between items-center pt-6 border-t">
             <Button
-  variant="outline"
-  onClick={back}
-  size="lg"
-  className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB] rounded-md"
->
-  Retour
-</Button>
+              variant="outline"
+              onClick={back}
+              size="lg"
+              className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB]"
+            >
+              ← Retour
+            </Button>
 
             <Button
               onClick={next}
               disabled={!signatureOk}
               size="lg"
-              className="min-w-[200px]"
+              className="bg-[#186BB0] text-white hover:bg-[#145a96] min-w-[200px]"
             >
               Publier le mandat
             </Button>
@@ -1732,9 +1725,8 @@ export function CreateMandatWizard() {
         </div>
       ),
       isValid: () => Boolean(signatureOk),
-    }
-  );
-
+    },
+);
   /* ---------------- Soumission finale ---------------- */
   const handleSubmit = async () => {
     console.log("🚀 [handleSubmit] Début de la soumission du mandat");
