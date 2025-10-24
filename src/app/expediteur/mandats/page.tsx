@@ -323,12 +323,14 @@ export default function MandatsPage() {
           >
             <Plus className="h-3.5 w-3.5" />
             Créer un mandat
+            
           </Button>
+          
           <div className="w-9 h-9 rounded-full overflow-hidden border">
             {/* avatarSrc is guaranteed to be a string now (never {}), so TypeScript error is avoided */}
             <img
               alt="avatar"
-              src={avatarSrc}
+             src="/avatar.png"
               className="w-full h-full object-cover"
             />
           </div>
