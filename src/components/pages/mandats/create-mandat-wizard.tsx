@@ -9,7 +9,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 import { FiAlertCircle } from "react-icons/fi";
-import { MdOutlineCalendarMonth } from "react-icons/md";
+import {
+  MdKeyboardDoubleArrowRight,
+  MdOutlineCalendarMonth,
+} from "react-icons/md";
 import { LuUpload } from "react-icons/lu";
 
 import {
@@ -63,6 +66,8 @@ import {
 } from "@/types/mandat-form";
 import { useMandats } from "@/hooks/useMandats";
 import { calculateQuote, Variables, Supplement } from "@/lib/quote";
+import { Slider } from "@/components/ui/slider";
+import { FaStar } from "react-icons/fa6";
 
 const avatarSrc: string = (() => {
   // If the user object provides a string avatar url, use it.
@@ -278,9 +283,9 @@ export function CreateMandatWizard() {
       data.nom.trim().length > 0 && data.description.trim().length >= 10;
 
     return (
-      <div className="space-y-8">
+      <div className="space-y-4">
         <div>
-          <h2 className="text-2xl font-bold mb-2 text-color :#111827">
+          <h2 className="text-2xl font-bold mb-1 text-color :#111827">
             Créez un mandat
           </h2>
           <p style={{ color: "#6A7282" }}>
@@ -335,7 +340,7 @@ export function CreateMandatWizard() {
         </div>
 
         {/* Navigation custom */}
-        <div className="flex justify-between items-center pt-6">
+        <div className="flex justify-between items-center pt-2">
           <Button
             variant="outline"
             onClick={goNext}
@@ -419,559 +424,577 @@ export function CreateMandatWizard() {
     return result;
   };
 
-const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
-  <div className="space-y-8">
-    <div>
-      <h2 className="text-2xl font-bold mb-2">Adresse d'enlèvement</h2>
-      <p className="text-muted-foreground">
-        Indiquez où le transporteur doit venir chercher la marchandise.
-      </p>
-    </div>
-
-    <div className="space-y-6">
-      {/* Adresse complète - Simple Input Field */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium text-black">
-          Adresse complète <span style={{ color: "#C70036" }}>*</span>
-        </Label>
-        <Input
-          value={data.depart_adresse?.adresse || ""}
-          placeholder="Entrez adresse"
-          onChange={(e) => {
-            setData((p) => ({ 
-              ...p, 
-              depart_adresse: { ...p.depart_adresse, adresse: e.target.value }
-            }));
-          }}
-          className="h-10 bg-[#F9FAFB] border-gray-300"
-          autoComplete="off"
-        />
+  const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold mb-2">Adresse d'enlèvement</h2>
+        <p className="text-muted-foreground">
+          Indiquez où le transporteur doit venir chercher la marchandise.
+        </p>
       </div>
 
-      {/* Pays et Canton/région */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="space-y-6">
+        {/* Adresse complète - Simple Input Field */}
         <div className="space-y-2">
           <Label className="text-sm font-medium text-black">
-            Pays <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Select
-            value={data.depart_pays}
-            onValueChange={(value) =>
-              setData((p) => ({ ...p, depart_pays: value }))
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionnez votre pays" />
-            </SelectTrigger>
-            <SelectContent>
-              {countries.map((country) => (
-                <SelectItem key={country.value} value={country.value}>
-                  {country.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-black">
-            Canton / région <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <select
-            value={data.depart_canton}
-            onChange={(e) =>
-              setData((p) => ({ ...p, depart_canton: e.target.value }))
-            }
-           className="h-10 w-full bg-[#F9FAFB] border border-gray-300 rounded-md px-2 text-[#6A7282]"
->
-  <option value="">Sélectionnez votre canton / région</option>
-  <option value="Geneve">Genève</option>
-  <option value="Vaud">Vaud</option>
-  <option value="Zurich">Zurich</option>
-  <option value="Bern">Bern</option>
-  {/* Add more cantons/regions as needed */}
-</select>
-        </div>
-      </div>
-
-      {/* Ville et Code postal */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-black">
-            Votre ville <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <select
-            value={data.depart_ville}
-            onChange={(e) =>
-              setData((p) => ({ ...p, depart_ville: e.target.value }))
-            }
-          
-  className="h-10 w-full bg-[#F9FAFB] border border-gray-300 rounded-md px-2 text-[#6A7282]"
->
-  <option value="">Sélectionnez la ville</option>
-  <option value="Geneve">Genève</option>
-  <option value="Vaud">Vaud</option>
-  <option value="Zurich">Zurich</option>
-  <option value="Bern">Bern</option>
-  {/* Add more cities as needed */}
-</select>
-
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Code postal <span style={{ color: "#C70036" }}>*</span>
+            Adresse complète <span style={{ color: "#C70036" }}>*</span>
           </Label>
           <Input
-            value={data.depart_code_postal}
-            placeholder="Entrez le code postal"
+            value={data.depart_adresse?.adresse || ""}
+            placeholder="Entrez adresse"
+            onChange={(e) => {
+              setData((p) => ({
+                ...p,
+                depart_adresse: {
+                  ...p.depart_adresse,
+                  adresse: e.target.value,
+                },
+              }));
+            }}
+            className="h-10 bg-[#F9FAFB] border-gray-300"
+            autoComplete="off"
+          />
+        </div>
+
+        {/* Pays et Canton/région */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              Pays <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.depart_pays}
+              onValueChange={(value) =>
+                setData((p) => ({ ...p, depart_pays: value }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez votre pays" />
+              </SelectTrigger>
+              <SelectContent>
+                {countries.map((country) => (
+                  <SelectItem key={country.value} value={country.value}>
+                    {country.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              Canton / région <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <select
+              value={data.depart_canton}
+              onChange={(e) =>
+                setData((p) => ({ ...p, depart_canton: e.target.value }))
+              }
+              className="h-10 w-full bg-[#F9FAFB] border border-gray-300 rounded-md px-2 text-[#6A7282]"
+            >
+              <option value="">Sélectionnez votre canton / région</option>
+              <option value="Geneve">Genève</option>
+              <option value="Vaud">Vaud</option>
+              <option value="Zurich">Zurich</option>
+              <option value="Bern">Bern</option>
+              {/* Add more cantons/regions as needed */}
+            </select>
+          </div>
+        </div>
+
+        {/* Ville et Code postal */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              Votre ville <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <select
+              value={data.depart_ville}
+              onChange={(e) =>
+                setData((p) => ({ ...p, depart_ville: e.target.value }))
+              }
+              className="h-10 w-full bg-[#F9FAFB] border border-gray-300 rounded-md px-2 text-[#6A7282]"
+            >
+              <option value="">Sélectionnez la ville</option>
+              <option value="Geneve">Genève</option>
+              <option value="Vaud">Vaud</option>
+              <option value="Zurich">Zurich</option>
+              <option value="Bern">Bern</option>
+              {/* Add more cities as needed */}
+            </select>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Code postal <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              value={data.depart_code_postal}
+              placeholder="Entrez le code postal"
+              onChange={(e) =>
+                setData((p) => ({ ...p, depart_code_postal: e.target.value }))
+              }
+              className="h-10"
+            />
+          </div>
+        </div>
+
+        {/* Contact */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Nom du contact <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              value={data.depart_contact ?? ""}
+              placeholder="Personne à contacter sur place"
+              onChange={(e) =>
+                setData((p) => ({ ...p, depart_contact: e.target.value }))
+              }
+              className="h-10"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Téléphone du contact <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              value={data.depart_telephone}
+              placeholder="Numéro de contact direct"
+              onChange={(e) =>
+                setData((p) => ({ ...p, depart_telephone: e.target.value }))
+              }
+              className="h-10"
+            />
+          </div>
+        </div>
+
+        {/* Horaires d'ouverture */}
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Horaires d'ouverture</Label>
+          <Textarea
+            value={data.depart_horaires_ouverture ?? ""}
+            placeholder="Ex : Lun–Ven 08:00–12:00 / 13:30–17:00"
+            rows={2}
             onChange={(e) =>
-              setData((p) => ({ ...p, depart_code_postal: e.target.value }))
+              setData((p) => ({
+                ...p,
+                depart_horaires_ouverture: e.target.value,
+              }))
             }
-            className="h-10"
+            className="resize-none"
           />
         </div>
       </div>
 
-      {/* Contact */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Nom du contact <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Input
-            value={data.depart_contact ?? ""}
-            placeholder="Personne à contacter sur place"
-            onChange={(e) =>
-              setData((p) => ({ ...p, depart_contact: e.target.value }))
-            }
-            className="h-10"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Téléphone du contact <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Input
-            value={data.depart_telephone}
-            placeholder="Numéro de contact direct"
-            onChange={(e) =>
-              setData((p) => ({ ...p, depart_telephone: e.target.value }))
-            }
-            className="h-10"
-          />
-        </div>
-      </div>
+      {/* Navigation */}
+      <div className="flex justify-between items-center pt-4">
+        <Button
+          variant="outline"
+          onClick={goBack}
+          className="bg-[#F3F4F6] text-[#70757c] border border-[#E5E7EB]"
+        >
+          ← Retour
+        </Button>
 
-      {/* Horaires d'ouverture */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium">Horaires d'ouverture</Label>
-        <Textarea
-          value={data.depart_horaires_ouverture ?? ""}
-          placeholder="Ex : Lun–Ven 08:00–12:00 / 13:30–17:00"
-          rows={2}
-          onChange={(e) =>
-            setData((p) => ({
-              ...p,
-              depart_horaires_ouverture: e.target.value,
-            }))
-          }
-          className="resize-none"
-        />
+        <Button
+          onClick={() => setAddressSubStep(1)}
+          disabled={!data.depart_adresse?.adresse?.trim()}
+          className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+        >
+          Continuer
+        </Button>
       </div>
     </div>
-
-    {/* Navigation */}
-    <div className="flex justify-between items-center pt-6">
-      <Button
-        variant="outline"
-        onClick={goBack}
-        className="bg-[#F3F4F6] text-[#70757c] border border-[#E5E7EB]"
-      >
-        ← Retour
-      </Button>
-
-      <Button
-        onClick={() => setAddressSubStep(1)}
-        disabled={!data.depart_adresse?.adresse?.trim()}
-        className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
-      >
-        Continuer
-      </Button>
-    </div>
-  </div>
-);
+  );
   const AddressLivraisonForm = (goNext: () => void) => (
-  <div className="space-y-8">
-    <div>
-      <h2 className="text-2xl font-bold mb-2">Adresse de livraison</h2>
-      <p className="text-muted-foreground">
-        Indiquez où la marchandise doit être livrée.
-      </p>
-    </div>
-
-    <div className="space-y-6">
-      {/* Adresse complète - Simple Input Field */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium text-black">
-          Adresse complète <span style={{ color: "#C70036" }}>*</span>
-        </Label>
-        <Input
-          value={data.arrivee_adresse?.adresse || ""}
-          placeholder="Entrez adresse"
-          onChange={(e) => {
-            setData((p) => ({ 
-              ...p, 
-              arrivee_adresse: { ...p.arrivee_adresse, adresse: e.target.value }
-            }));
-          }}
-          className="h-10 bg-[#F9FAFB] border-gray-300"
-          autoComplete="off"
-        />
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold mb-2">Adresse de livraison</h2>
+        <p className="text-muted-foreground">
+          Indiquez où la marchandise doit être livrée.
+        </p>
       </div>
 
-      {/* Pays et Canton/région */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="space-y-6">
+        {/* Adresse complète - Simple Input Field */}
         <div className="space-y-2">
           <Label className="text-sm font-medium text-black">
-            Pays <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Select
-            value={data.arrivee_pays}
-            onValueChange={(value) =>
-              setData((p) => ({ ...p, arrivee_pays: value }))
-            }
-          >
-            <SelectTrigger className="bg-[#F9FAFB]">
-              <SelectValue placeholder="Sélectionnez votre pays" />
-            </SelectTrigger>
-            <SelectContent>
-              {countries.map((country) => (
-                <SelectItem key={country.value} value={country.value}>
-                  {country.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2">
-         <Label className="text-sm font-medium text-black">
-    État/province <span style={{ color: "#C70036" }}>*</span>
-  </Label>
-  <select
-    className="h-10 w-full bg-[#F9FAFB] border border-gray-300 rounded-md px-2 text-[#6A7282]"
-  >
-    <option value="">Sélectionnez l’état / province</option>
-    <option value="Geneve">Genève</option>
-    <option value="Vaud">Vaud</option>
-    <option value="Zurich">Zurich</option>
-    <option value="Bern">Bern</option>
-    {/* Add more options as needed */}
-  </select>
-         
-        </div>
-      </div>
-
-      {/* Ville et Code postal */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-black">
-            Votre ville <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <select
-            value={data.arrivee_ville}
-            onChange={(e) =>
-              setData((p) => ({ ...p, arrivee_ville: e.target.value }))
-            }
-           className="h-10 w-full bg-[#F9FAFB] border border-gray-300 rounded-md px-2 text-[#6A7282]"
-          >
-            <option value="">Sélectionnez la ville</option>
-            <option value="Geneve">Genève</option>
-            <option value="Vaud">Vaud</option>
-            <option value="Zurich">Zurich</option>
-            <option value="Bern">Bern</option>
-            {/* Add more cities as needed */}
-          </select>
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-black">
-            Code postal <span style={{ color: "#C70036" }}>*</span>
+            Adresse complète <span style={{ color: "#C70036" }}>*</span>
           </Label>
           <Input
-            value={data.arrivee_code_postal}
-            placeholder="Entrez le code postal"
-            onChange={(e) =>
-              setData((p) => ({ ...p, arrivee_code_postal: e.target.value }))
-            }
+            value={data.arrivee_adresse?.adresse || ""}
+            placeholder="Entrez adresse"
+            onChange={(e) => {
+              setData((p) => ({
+                ...p,
+                arrivee_adresse: {
+                  ...p.arrivee_adresse,
+                  adresse: e.target.value,
+                },
+              }));
+            }}
             className="h-10 bg-[#F9FAFB] border-gray-300"
+            autoComplete="off"
+          />
+        </div>
+
+        {/* Pays et Canton/région */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              Pays <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.arrivee_pays}
+              onValueChange={(value) =>
+                setData((p) => ({ ...p, arrivee_pays: value }))
+              }
+            >
+              <SelectTrigger className="bg-[#F9FAFB]">
+                <SelectValue placeholder="Sélectionnez votre pays" />
+              </SelectTrigger>
+              <SelectContent>
+                {countries.map((country) => (
+                  <SelectItem key={country.value} value={country.value}>
+                    {country.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              État/province <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <select className="h-10 w-full bg-[#F9FAFB] border border-gray-300 rounded-md px-2 text-[#6A7282]">
+              <option value="">Sélectionnez l’état / province</option>
+              <option value="Geneve">Genève</option>
+              <option value="Vaud">Vaud</option>
+              <option value="Zurich">Zurich</option>
+              <option value="Bern">Bern</option>
+              {/* Add more options as needed */}
+            </select>
+          </div>
+        </div>
+
+        {/* Ville et Code postal */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              Votre ville <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <select
+              value={data.arrivee_ville}
+              onChange={(e) =>
+                setData((p) => ({ ...p, arrivee_ville: e.target.value }))
+              }
+              className="h-10 w-full bg-[#F9FAFB] border border-gray-300 rounded-md px-2 text-[#6A7282]"
+            >
+              <option value="">Sélectionnez la ville</option>
+              <option value="Geneve">Genève</option>
+              <option value="Vaud">Vaud</option>
+              <option value="Zurich">Zurich</option>
+              <option value="Bern">Bern</option>
+              {/* Add more cities as needed */}
+            </select>
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              Code postal <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              value={data.arrivee_code_postal}
+              placeholder="Entrez le code postal"
+              onChange={(e) =>
+                setData((p) => ({ ...p, arrivee_code_postal: e.target.value }))
+              }
+              className="h-10 bg-[#F9FAFB] border-gray-300"
+            />
+          </div>
+        </div>
+
+        {/* Contact */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              Nom du contact <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              value={data.arrivee_contact ?? ""}
+              placeholder="Personne à contacter sur place"
+              onChange={(e) =>
+                setData((p) => ({ ...p, arrivee_contact: e.target.value }))
+              }
+              className="h-10 bg-[#F9FAFB] border-gray-300"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-black">
+              Téléphone du contact <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              value={data.arrivee_telephone}
+              placeholder="Numéro de contact direct"
+              onChange={(e) =>
+                setData((p) => ({ ...p, arrivee_telephone: e.target.value }))
+              }
+              className="h-10 bg-[#F9FAFB] border-gray-300"
+            />
+          </div>
+        </div>
+
+        {/* Horaires d'ouverture */}
+        <div className="space-y-2">
+          <Label className="text-sm font-medium text-black">
+            Horaires d'ouverture
+          </Label>
+          <Textarea
+            value={data.arrivee_horaires_ouverture ?? ""}
+            placeholder="Ex : Lun–Ven 08:00–12:00 / 13:30–17:00"
+            rows={2}
+            onChange={(e) =>
+              setData((p) => ({
+                ...p,
+                arrivee_horaires_ouverture: e.target.value,
+              }))
+            }
+            className="resize-none bg-[#F9FAFB] border-gray-300"
           />
         </div>
       </div>
 
-      {/* Contact */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-black">
-            Nom du contact <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Input
-            value={data.arrivee_contact ?? ""}
-            placeholder="Personne à contacter sur place"
-            onChange={(e) =>
-              setData((p) => ({ ...p, arrivee_contact: e.target.value }))
-            }
-            className="h-10 bg-[#F9FAFB] border-gray-300"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-black">
-            Téléphone du contact <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Input
-            value={data.arrivee_telephone}
-            placeholder="Numéro de contact direct"
-            onChange={(e) =>
-              setData((p) => ({ ...p, arrivee_telephone: e.target.value }))
-            }
-            className="h-10 bg-[#F9FAFB] border-gray-300"
-          />
-        </div>
-      </div>
+      {/* Navigation */}
+      <div className="flex justify-between items-center pt-4">
+        <Button
+          variant="outline"
+          onClick={() => setAddressSubStep(0)}
+          className="bg-[#F3F4F6] text-[#888d95] border border-[#E5E7EB]"
+        >
+          ← Retour
+        </Button>
 
-      {/* Horaires d'ouverture */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium text-black">Horaires d'ouverture</Label>
-        <Textarea
-          value={data.arrivee_horaires_ouverture ?? ""}
-          placeholder="Ex : Lun–Ven 08:00–12:00 / 13:30–17:00"
-          rows={2}
-          onChange={(e) =>
-            setData((p) => ({
-              ...p,
-              arrivee_horaires_ouverture: e.target.value,
-            }))
-          }
-          className="resize-none bg-[#F9FAFB] border-gray-300"
-        />
+        <Button
+          onClick={goNext}
+          disabled={!data.arrivee_adresse?.adresse?.trim()}
+          className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+        >
+          Continuer
+        </Button>
       </div>
     </div>
-
-    {/* Navigation */}
-    <div className="flex justify-between items-center pt-6">
-      <Button
-        variant="outline"
-        onClick={() => setAddressSubStep(0)}
-        className="bg-[#F3F4F6] text-[#888d95] border border-[#E5E7EB]"
-      >
-        ← Retour
-      </Button>
-
-      <Button
-        onClick={goNext}
-        disabled={!data.arrivee_adresse?.adresse?.trim()}
-        className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
-      >
-        Continuer
-      </Button>
-    </div>
-  </div>
-);
+  );
 
   /* ---------------- Composants Marchandise ---------------- */
   const MarchandiseDetailsForm = (goNext: () => void, goBack: () => void) => (
-  <div className="space-y-8">
-    <div>
-      <h2 className="text-2xl font-bold mb-2">Détails de la marchandise</h2>
-      <p className="text-muted-foreground">
-        Précisez ce que vous souhaitez transporter pour obtenir une estimation juste.
-      </p>
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold mb-2">Détails de la marchandise</h2>
+        <p className="text-muted-foreground">
+          Précisez ce que vous souhaitez transporter pour obtenir une estimation
+          juste.
+        </p>
+      </div>
+
+      <div className="space-y-6">
+        {/* Type de marchandise et Poids */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Type de marchandise <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.type_marchandise ?? ""}
+              onValueChange={(value) =>
+                setData((p) => ({
+                  ...p,
+                  type_marchandise: value as TypeMarchandise,
+                }))
+              }
+            >
+              <SelectTrigger className="h-10 bg-[#F9FAFB] text-[#6A7282]">
+                <SelectValue placeholder="Sélectionnez le type de marchandise" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(TypeMarchandise).map((v) => (
+                  <SelectItem key={v} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Poids total (kg) <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              type="number"
+              min="0.1"
+              step="0.01"
+              value={data.poids_total_kg}
+              placeholder="Min 0.1"
+              onChange={(e) =>
+                setData((p) => ({
+                  ...p,
+                  poids_total_kg: Number(e.target.value),
+                }))
+              }
+              className="h-10 bg-[#F9FAFB]"
+            />
+          </div>
+        </div>
+
+        {/* Volume et Nombre de colis */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Volume total (m³) <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Input
+              type="number"
+              min="0.01"
+              step="0.01"
+              value={data.volume_total_m3}
+              placeholder="Min 0.01"
+              onChange={(e) =>
+                setData((p) => ({
+                  ...p,
+                  volume_total_m3: Number(e.target.value),
+                }))
+              }
+              className="h-10 bg-[#F9FAFB]"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Nombre de colis</Label>
+            <Input
+              type="text"
+              value={data.acces_autre ?? ""}
+              placeholder="Indiquez le nombre total de colis"
+              onChange={(e) =>
+                setData((p) => ({ ...p, acces_autre: e.target.value }))
+              }
+              className="h-10 bg-[#F9FAFB]"
+            />
+          </div>
+        </div>
+
+        {/* Type de véhicule et Accès au site */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Type de véhicule requis{" "}
+              <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.type_vehicule ?? ""}
+              onValueChange={(value) =>
+                setData((p) => ({ ...p, type_vehicule: value as TypeVehicule }))
+              }
+            >
+              <SelectTrigger className="h-10 bg-[#F9FAFB] text-[#6A7282]">
+                <SelectValue placeholder="Sélectionnez le véhicule adapté" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(TypeVehicule).map((v) => (
+                  <SelectItem key={v} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Accès au site <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.type_acces ?? ""}
+              onValueChange={(value) =>
+                setData((p) => ({ ...p, type_acces: value as TypeAcces }))
+              }
+            >
+              <SelectTrigger className="h-10 bg-[#F9FAFB] text-[#6A7282]">
+                <SelectValue placeholder="Sélectionnez les conditions d'accès" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(TypeAcces).map((v) => (
+                  <SelectItem key={v} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Moyen de chargement et Précisez l'accès */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Moyen de chargement <span style={{ color: "#C70036" }}>*</span>
+            </Label>
+            <Select
+              value={data.moyen_chargement ?? ""}
+              onValueChange={(value) =>
+                setData((p) => ({
+                  ...p,
+                  moyen_chargement: value as MoyenChargement,
+                }))
+              }
+            >
+              <SelectTrigger className="h-10 bg-[#F9FAFB] text-[#6A7282]">
+                <SelectValue placeholder="Sélectionnez le mode de chargement" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(MoyenChargement).map((v) => (
+                  <SelectItem key={v} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Précisez l'accès (si "autre")
+            </Label>
+            <Input
+              type="text"
+              value={data.acces_autre ?? ""}
+              placeholder="Décrivez les contraintes spécifiques"
+              onChange={(e) =>
+                setData((p) => ({ ...p, acces_autre: e.target.value }))
+              }
+              className="h-10 bg-[#F9FAFB]"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <div className="flex justify-between items-center pt-4">
+        <Button
+          variant="outline"
+          onClick={goBack}
+          className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB]"
+        >
+          ← Retour
+        </Button>
+
+        <Button
+          onClick={() => setMerchandiseSubStep(1)}
+          disabled={data.poids_total_kg < 0.1}
+          className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
+        >
+          Continuer
+        </Button>
+      </div>
     </div>
-
-    <div className="space-y-6">
-      {/* Type de marchandise et Poids */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Type de marchandise <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Select
-            value={data.type_marchandise ?? ""}
-            onValueChange={(value) =>
-              setData((p) => ({ ...p, type_marchandise: value as TypeMarchandise }))
-            }
-          >
-            <SelectTrigger className="h-10 bg-[#F9FAFB] text-[#6A7282]">
-              <SelectValue placeholder="Sélectionnez le type de marchandise" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(TypeMarchandise).map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Poids total (kg) <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Input
-            type="number"
-            min="0.1"
-            step="0.01"
-            value={data.poids_total_kg}
-            placeholder="Min 0.1"
-            onChange={(e) =>
-              setData((p) => ({ ...p, poids_total_kg: Number(e.target.value) }))
-            }
-            className="h-10 bg-[#F9FAFB]"
-          />
-        </div>
-      </div>
-
-      {/* Volume et Nombre de colis */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Volume total (m³) <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Input
-            type="number"
-            min="0.01"
-            step="0.01"
-            value={data.volume_total_m3}
-            placeholder="Min 0.01"
-            onChange={(e) =>
-              setData((p) => ({ ...p, volume_total_m3: Number(e.target.value) }))
-            }
-            className="h-10 bg-[#F9FAFB]"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Nombre de colis</Label>
-          <Input
-            type="text"
-            value={data.acces_autre ?? ""}
-            placeholder="Indiquez le nombre total de colis"
-            onChange={(e) =>
-              setData((p) => ({ ...p, acces_autre: e.target.value }))
-            }
-            className="h-10 bg-[#F9FAFB]"
-          />
-        </div>
-      </div>
-
-      {/* Type de véhicule et Accès au site */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Type de véhicule requis <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Select
-            value={data.type_vehicule ?? ""}
-            onValueChange={(value) =>
-              setData((p) => ({ ...p, type_vehicule: value as TypeVehicule }))
-            }
-          >
-            <SelectTrigger className="h-10 bg-[#F9FAFB] text-[#6A7282]">
-              <SelectValue placeholder="Sélectionnez le véhicule adapté" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(TypeVehicule).map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Accès au site <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Select
-            value={data.type_acces ?? ""}
-            onValueChange={(value) =>
-              setData((p) => ({ ...p, type_acces: value as TypeAcces }))
-            }
-          >
-            <SelectTrigger className="h-10 bg-[#F9FAFB] text-[#6A7282]">
-              <SelectValue placeholder="Sélectionnez les conditions d'accès" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(TypeAcces).map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* Moyen de chargement et Précisez l'accès */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Moyen de chargement <span style={{ color: "#C70036" }}>*</span>
-          </Label>
-          <Select
-            value={data.moyen_chargement ?? ""}
-            onValueChange={(value) =>
-              setData((p) => ({ ...p, moyen_chargement: value as MoyenChargement }))
-            }
-          >
-            <SelectTrigger className="h-10 bg-[#F9FAFB] text-[#6A7282]">
-              <SelectValue placeholder="Sélectionnez le mode de chargement" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(MoyenChargement).map((v) => (
-                <SelectItem key={v} value={v}>
-                  {v}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Précisez l'accès (si "autre")</Label>
-          <Input
-            type="text"
-            value={data.acces_autre ?? ""}
-            placeholder="Décrivez les contraintes spécifiques"
-            onChange={(e) =>
-              setData((p) => ({ ...p, acces_autre: e.target.value }))
-            }
-            className="h-10 bg-[#F9FAFB]"
-          />
-        </div>
-      </div>
-    </div>
-
-    {/* Navigation */}
-    <div className="flex justify-between items-center pt-6">
-      <Button
-        variant="outline"
-        onClick={goBack}
-        className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB]"
-      >
-        ← Retour
-      </Button>
-
-      <Button
-        onClick={() => setMerchandiseSubStep(1)}
-        disabled={data.poids_total_kg < 0.1}
-        className="bg-[#186BB0] text-white hover:bg-[#145a96] disabled:opacity-100 disabled:bg-[#186BB0] disabled:text-white disabled:pointer-events-none"
-      >
-        Continuer
-      </Button>
-    </div>
-  </div>
-);
-
+  );
 
   // Composant Toggle Switch
   const ToggleSwitch = ({
@@ -981,7 +1004,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
     checked: boolean;
     onChange: (checked: boolean) => void;
   }) => (
-  <button
+    <button
       type="button"
       role="switch"
       aria-checked={checked}
@@ -1031,7 +1054,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
               </Label>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help"/>
+                  <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Nécessite un transport réfrigéré ou chauffé</p>
@@ -1167,7 +1190,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-6">
+        <div className="flex justify-between items-center pt-4">
           <Button
             variant="outline"
             onClick={() => setMerchandiseSubStep(0)}
@@ -1233,7 +1256,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
       label: "Date du transport",
       description: "Dates et heures d'enlèvement et livraison",
       content: (next, back) => (
-        <div className="space-y-8">
+        <div className="space-y-4">
           <div>
             <h2 className="text-2xl font-bold mb-2">Dates du transport</h2>
             <p className="text-muted-foreground">
@@ -1243,18 +1266,18 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
           </div>
 
           {/* Enlèvement souhaité */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             <h3 className="text-lg font-semibold">Enlèvement souhaité</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label className="text-sm font-medium">
                   Enlèvement souhaité — début{" "}
                   <span style={{ color: "#C70036" }}>*</span>
                 </Label>
                 <div className="relative">
                   <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <Input
+                  <DateTimeInput
                     value={data.enlevement_souhaite_debut_at}
                     placeholder="Sélectionnez la date de départ souhaitée"
                     onChange={(e) =>
@@ -1263,7 +1286,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                         enlevement_souhaite_debut_at: e.target.value,
                       }))
                     }
-                    className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
                   />
                 </div>
                 {/* <DateTimeInput
@@ -1279,15 +1302,14 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
 
                 <p className="text-xs text-muted-foreground"></p>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label className="text-sm font-medium">
                   Enlèvement souhaité — fin{" "}
                   <span style={{ color: "#C70036" }}>*</span>
                 </Label>
                 <div className="relative">
                   <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <Input
-                    type="text"
+                  <DateTimeInput
                     value={data.enlevement_souhaite_fin_at}
                     placeholder="Jusqu’à quelle date le retrait peut avoir lieu"
                     onChange={(e) =>
@@ -1296,7 +1318,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                         enlevement_souhaite_fin_at: e.target.value,
                       }))
                     }
-                    className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
                   />
                 </div>
 
@@ -1319,8 +1341,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
               </Label>
               <div className="relative">
                 <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <Input
-                  type="text"
+                <DateTimeInput
                   value={data.enlevement_max_at || ""}
                   placeholder="Dernier jour possible pour le retrait"
                   onChange={(e) =>
@@ -1329,7 +1350,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                       enlevement_max_at: e.target.value,
                     }))
                   }
-                  className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                  className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
                 />
               </div>
               {/* <DateTimeInput
@@ -1355,8 +1376,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                 </Label>
                 <div className="relative">
                   <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <Input
-                    type="text"
+                  <DateTimeInput
                     value={data.livraison_prevue_debut_at || ""}
                     placeholder="Date prévue de livraison"
                     onChange={(e) =>
@@ -1365,7 +1385,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                         livraison_prevue_debut_at: e.target.value,
                       }))
                     }
-                    className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
                   />
                 </div>
                 {/* <DateTimeInput
@@ -1379,15 +1399,13 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                 /> */}
                 <p className="text-xs text-muted-foreground"></p>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label className="text-sm font-medium">
                   Livraison prévue — fin{" "}
                   <span style={{ color: "#C70036" }}>*</span>
                 </Label>
                 <div className="relative">
-                  <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                  <Input
-                    type="text"
+                  <DateTimeInput
                     value={data.livraison_prevue_fin_at || ""}
                     placeholder="Dernier jour possible pour la livraison"
                     onChange={(e) =>
@@ -1396,8 +1414,14 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                         livraison_prevue_fin_at: e.target.value,
                       }))
                     }
-                    className="h-10 text-[#6A7282] bg-[#F9FAFB] pl-10 w-full"
+                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
                   />
+
+                  {/* <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  <Input
+                    type="date"
+                   
+                  /> */}
                 </div>
                 {/* <DateTimeInput
                   value={data.livraison_prevue_fin_at || ""}
@@ -1444,7 +1468,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
               </div>
             )}
 
-          <div className="flex justify-between items-center pt-6 border-t">
+          <div className="flex justify-between items-center pt-4 border-t">
             <Button
               variant="outline"
               onClick={back}
@@ -1535,9 +1559,8 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                     Surface facturable
                   </span>
                   <span className="text-sm font-medium text-[#111827]">
-  {data.surface_m2 ?? "XX"} m²
-</span>
-
+                    {data.surface_m2 ?? "XX"} m²
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-[#6B7280]">
@@ -1593,7 +1616,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-6 ">
+          <div className="flex justify-between items-center pt-4 ">
             <Button
               variant="outline"
               onClick={back}
@@ -1688,7 +1711,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
           </div>
 
           {/* Footer buttons */}
-          <div className="flex justify-between items-center pt-6">
+          <div className="flex justify-between items-center pt-4">
             <Button
               variant="outline"
               onClick={back}
@@ -1721,112 +1744,129 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
       isValid: () => !!quote,
     },
 
- {
-  label: "Signature du document",
-  description: "Confirmez et publiez",
-  content: (next, back) => (
-    <div className="space-y-10">
-      <div>
-        <h2 className="text-xl font-semibold text-gray-900">
-          Signature du document
-        </h2>
-        <p className="text-gray-500 text-sm">
-          Cette signature valide officiellement votre demande de transport.
-        </p>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">
-          Votre nom <span className="text-[#C70036]">*</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Doit correspondre au signataire autorisé."
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#186BB0]"
-        />
-      </div>
-
-      <div className="space-y-3">
-        <label className="text-sm font-medium text-gray-700">
-          Il ne vous reste plus qu'à signer !{" "}
-          <span className="text-[#C70036]">*</span>
-        </label>
-
-        <div className="border border-gray-300 rounded-lg p-6 bg-gray-50 text-center">
-          <img
-            src="/Votre Nom Here.png"
-            alt="Signature"
-            className="mx-auto w-[260px] h-[100px] object-contain"
-          />
-        </div>
-        <div className="border border-gray-300 rounded-lg p-6 bg-gray-50 text-center">
-  <div className="relative h-5 bg-gray-200 rounded-full overflow-hidden">
-    <div className="absolute left-0 top-0 h-full bg-[#45c4b0] w-[50%] rounded-full" />
-    <div
-      className="absolute z-10 bg-white rounded-full p-1 shadow-sm"
-      style={{ left: '47%', top: '50%', transform: 'translateY(-50%)' }}
-    >
-      <img
-        src="/Frame.png"
-        alt="arrow"
-        width="16"
-        height="16"
-        className="object-contain"
-      />
-    </div>
-    <p className="absolute inset-0 flex items-center justify-center text-xs text-gray-600"></p>
-  </div>
-
-  {/* Text below the progress bar */}
-  <p className="mt-3 text-sm text-gray-600">Balayez vers la droite pour signer…</p>
-</div>
-
-      </div>
-
-      <div className="p-4 rounded-lg bg-muted/30 space-y-3 border">
-        <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            className="w-5 h-5 mt-0.5"
-            checked={signatureOk}
-            onChange={(e) => setSignatureOk(e.target.checked)}
-          />
-          <div className="flex-1 text-sm">
-            <span className="font-medium">
-              Je certifie l'exactitude des informations fournies
-            </span>
-            <p className="text-gray-500 mt-1 text-sm">
-              Les informations que j'ai fournies sont exactes et complètes.
-              Je comprends que toute information incorrecte peut entraîner
-              des complications lors du transport.
+    {
+      label: "Signature du document",
+      description: "Confirmez et publiez",
+      content: (next, back) => (
+        <div className="space-y-10">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Signature du document
+            </h2>
+            <p className="text-gray-500 text-sm">
+              Cette signature valide officiellement votre demande de transport.
             </p>
           </div>
-        </label>
-      </div>
 
-      <div className="flex justify-between items-center pt-6 border-t">
-        <Button
-          variant="outline"
-          onClick={back}
-          size="lg"
-          className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB]"
-        >
-          ← Retour
-        </Button>
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">
+              Votre nom <span className="text-[#C70036]">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Doit correspondre au signataire autorisé."
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#186BB0]"
+            />
+          </div>
 
-        <Button
-          onClick={next}
-          disabled={!signatureOk}
-          size="lg"
-          className="bg-[#186BB0] text-white hover:bg-[#145a96] min-w-[100px]"
-        >
-          Signer
-        </Button>
-      </div>
-    </div>
-  ),
-  isValid: () => Boolean(signatureOk),
-}
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-gray-700">
+              Il ne vous reste plus qu'à signer !{" "}
+              <span className="text-[#C70036]">*</span>
+            </label>
+
+            <div className="border border-gray-300 rounded-lg p-6 bg-gray-50 text-center">
+              <img
+                src="/Votre Nom Here.png"
+                alt="Signature"
+                className="mx-auto w-[260px] h-[100px] object-contain"
+              />
+            </div>
+            <div className="border border-gray-300 rounded-lg p-6 bg-gray-50 text-center">
+              <Slider
+                defaultValue={[20]}
+                min={0}
+                max={100}
+                trackHeight="h-6"
+                rangeColor="bg-[#5CE7C0]"
+                renderThumb={(index) => (
+                  <div className="w-6 h-6 bg-white flex items-center justify-center rounded-full shadow-lg">
+                    <MdKeyboardDoubleArrowRight className="text-[#4A5565]" />
+                  </div>
+                )}
+              />
+
+              {/* <div className="relative h-5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="absolute left-0 top-0 h-full bg-[#45c4b0] w-[50%] rounded-full" />
+                <div
+                  className="absolute z-10 bg-white rounded-full p-1 shadow-sm"
+                  style={{
+                    left: "47%",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
+                >
+                  <img
+                    src="/Frame.png"
+                    alt="arrow"
+                    width="16"
+                    height="16"
+                    className="object-contain"
+                  />
+                </div>
+                <p className="absolute inset-0 flex items-center justify-center text-xs text-gray-600"></p>
+              </div> */}
+
+              <p className="mt-3 text-sm text-gray-600">
+                Balayez vers la droite pour signer…
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-lg bg-muted/30 space-y-3 border">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-5 h-5 mt-0.5"
+                checked={signatureOk}
+                onChange={(e) => setSignatureOk(e.target.checked)}
+              />
+              <div className="flex-1 text-sm">
+                <span className="font-medium">
+                  Je certifie l'exactitude des informations fournies
+                </span>
+                <p className="text-gray-500 mt-1 text-sm">
+                  Les informations que j'ai fournies sont exactes et complètes.
+                  Je comprends que toute information incorrecte peut entraîner
+                  des complications lors du transport.
+                </p>
+              </div>
+            </label>
+          </div>
+
+          <div className="flex justify-between items-center pt-4 border-t">
+            <Button
+              variant="outline"
+              onClick={back}
+              size="lg"
+              className="bg-[#F3F4F6] text-[#99A1AF] border border-[#E5E7EB]"
+            >
+              ← Retour
+            </Button>
+
+            <Button
+              onClick={next}
+              disabled={!signatureOk}
+              size="lg"
+              className="bg-[#186BB0] text-white hover:bg-[#145a96] min-w-[100px]"
+            >
+              Signer
+            </Button>
+          </div>
+        </div>
+      ),
+      isValid: () => Boolean(signatureOk),
+    }
   );
   /* ---------------- Soumission finale ---------------- */
   const handleSubmit = async () => {
@@ -1850,9 +1890,9 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
   const current = steps[activeStep];
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col h-screen overflow-hidden pr-[10px] py-[10px] bg-sidebar">
       {/* Header breadcrumb */}
-      <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="border-b border-border rounded-tr-xl !bg-white rounded-tl-xl backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="px-8 py-4 flex items-center justify-between">
           {/* Left Side: Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -1894,51 +1934,50 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
 
       {/* Contenu principal avec sidebar et formulaire */}
 
-      <div className="flex flex-1 p-8 overflow-hidden">
+      <div className="flex flex-1 p-4 overflow-hidden bg-white  ">
         {/* Colonne latérale gauche fixe - Navigation des étapes */}
-        <aside className="w-64 bg-[#F9FAFB] border-border p-[20px] flex flex-col overflow-auto rounded-lg">
-          <div className="mb-6">
+        <aside className="w-auto bg-[#F9FAFB] border-border px-[20px] py-[10px] flex flex-col overflow-auto rounded-lg">
+          <div className="mb-4">
             <h1 className="text-lg font-semibold mb-1">Créer un mandat</h1>
             <p className="text-xs text-muted-foreground">
               Suivez les étapes pour publier votre demande de transport.
             </p>
           </div>
 
-          {/* Liste des étapes verticale */}
-     <nav className="flex-1 space-y-1">
-  {steps.map((step, idx) => {
-    const isActive = idx === activeStep;
-    const isCompleted = idx < activeStep;
+          <nav className="flex-1">
+            {steps.map((step, idx) => {
+              const isActive = idx === activeStep;
+              const isCompleted = idx < activeStep;
 
-    const customIcons = [
-      "/icons/IconShape1.png",
-      "/icons/IconShape2.png",
-      "/icons/IconShape3.png",
-      "/icons/IconShape.png",
-      "/icons/IconShape4.png",
-      "/icons/IconShape5.png",
-      "/icons/IconShape6.png",
-    ];
+              const customIcons = [
+                "/icons/IconShape1.png",
+                "/icons/IconShape2.png",
+                "/icons/IconShape3.png",
+                "/icons/IconShape.png",
+                "/icons/IconShape4.png",
+                "/icons/IconShape5.png",
+                "/icons/IconShape6.png",
+              ];
 
-    const iconSrc = customIcons[idx] || "/images/default-icon.png";
+              const iconSrc = customIcons[idx] || "/images/default-icon.png";
 
-    return (
-      <div key={idx} className="relative">
-        <button
-          onClick={() => idx <= activeStep && setActiveStep(idx)}
-          disabled={idx > activeStep}
-          className={`w-full flex items-center gap-3 px-3 py-2 text-left rounded-md transition-all duration-200 ${
-            isActive
-              ? "text-[#186BB0] font-semibold"
-              : isCompleted
-              ? "text-black font-medium"
-              : "text-gray-400"
-          }`}
-        >
-          {/* ICON / IMAGE */}
-          <div className="flex-shrink-0">
-            <div
-              className={`flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200 
+              return (
+                <div key={idx} className="relative">
+                  <button
+                    onClick={() => idx <= activeStep && setActiveStep(idx)}
+                    disabled={idx > activeStep}
+                    className={`w-full flex items-center gap-3 px-3 py-2 text-left rounded-md transition-all duration-200 ${
+                      isActive
+                        ? "text-[#186BB0] font-semibold"
+                        : isCompleted
+                        ? "text-black font-medium"
+                        : "text-gray-400"
+                    }`}
+                  >
+                    {/* ICON / IMAGE */}
+                    <div className="flex-shrink-0">
+                      <div
+                        className={`flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200 
                 ${
                   isCompleted
                     ? "bg-[#DCFCE7]" // ✅ green for completed
@@ -1946,56 +1985,57 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
                     ? "bg-[#E4EEF7]" // 🔵 blue for active
                     : "bg-[#F3F4F6]" // ⚪ gray for inactive
                 }`}
-            >
-              {isCompleted ? (
-                // ✅ Tick icon when completed
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-[#00A63E]"  // ← tick also slightly larger
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              ) : (
-                // 🖼️ Custom image for steps
-                <img
-                  src={iconSrc}
-                  alt={step.label}
-                  className="w-6 h-6 object-contain"  // ← increased from w-4 h-4 → w-6 h-6
-                />
-              )}
-            </div>
-          </div>
+                      >
+                        {isCompleted ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-[#00A63E]"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        ) : (
+                          <img
+                            src={iconSrc}
+                            alt={step.label}
+                            className="w-8 h-8 object-contain"
+                          />
+                        )}
+                      </div>
+                    </div>
 
-          {/* LABEL */}
-          <div
-            className={`flex-1 min-w-0 text-sm ${
-              isActive
-                ? "text-[#186BB0]"
-                : isCompleted
-                ? "text-black"
-                : ""
-            }`}
-          >
-            {step.label}
-          </div>
-        </button>
+                    {/* LABEL */}
+                    <div
+                      className={`flex-1 min-w-0 text-sm ${
+                        isActive
+                          ? "text-[#186BB0]"
+                          : isCompleted
+                          ? "text-black"
+                          : ""
+                      }`}
+                    >
+                      {step.label}
+                    </div>
+                  </button>
 
-        {/* Divider line between steps */}
-        {idx < steps.length - 1 && (
-          <div className="absolute left-[34px] top-12 h-6 w-[1px] bg-[#E5E7EB]"></div>
-        )}
-      </div>
-    );
-  })}
-</nav>
-
+                  {/* Divider line between steps */}
+                  {idx < steps.length - 1 && (
+                    <div className="absolute left-[32px] top-12 h-6 w-[1px] bg-[#E5E7EB]"></div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
 
           {/* Footer avec progression */}
-          <div className="mt-auto pt-4">
+          <div className="mt-auto">
             <div className="bg-[#0E406A] rounded-lg p-3">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-medium text-white">
@@ -2020,7 +2060,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
         </aside>
 
         {/* Zone droite - Formulaire */}
-        <main className="flex-1 overflow-auto p-8">
+        <main className="flex-1 overflow-auto px-4 py-2">
           <div className="max-w-3xl mx-auto">
             <FormStepper
               steps={steps}
@@ -2032,8 +2072,7 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
         </main>
       </div>
 
-      {/*Footer collé en bas de la page */}
-      <footer className="border-t border-border py-6 px-8 text-sm text-muted-foreground flex items-center justify-between">
+      <footer className=" rounded-br-xl rounded-bl-xl bg-white py-2 px-8 text-sm text-muted-foreground flex items-center justify-between">
         <p>© 2025 Revers0. Tous droits réservés.</p>
         <div className="flex items-center gap-8">
           <p>Mentions légales</p>

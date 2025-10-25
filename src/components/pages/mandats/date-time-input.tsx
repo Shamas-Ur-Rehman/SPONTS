@@ -1,75 +1,67 @@
 "use client";
 
-import React from "react";
-import { Input } from "@/components/ui/input";
-import { Calendar, Clock } from "lucide-react";
+import React, { useRef } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SlCalender } from "react-icons/sl";
 
 interface DateTimeInputProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
+  placeholder?: string;
 }
 
 export function DateTimeInput({
   value,
   onChange,
   className,
+  placeholder = "Sélectionnez la date de départ souhaitée",
 }: DateTimeInputProps) {
-  /**
-   * Formate la date pour l'affichage
-   */
-  const formatDisplayDate = (dateTimeString: string): string => {
-    if (!dateTimeString) return "";
-
-    try {
-      const date = new Date(dateTimeString);
-      return date.toLocaleString("fr-CH", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "Europe/Zurich", // UTC+2 (heure d'été)
-      });
-    } catch {
-      return dateTimeString;
-    }
-  };
-
-  /**
-   * Gère le changement direct de la valeur datetime-local
-   */
-  const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
-  };
+  const selectedDate = value ? new Date(value) : null;
+  const datepickerRef = useRef<DatePicker>(null);
 
   return (
-    <div className={cn("space-y-3", className)}>
-      {/* Input principal datetime-local */}
-      <div className="relative">
-        {/* Icon on the left */}
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-          <Calendar className="h-4 w-4" />
-        </div>
+    <div className={cn("relative w-full", className)}>
+      {/* Left icon */}
+      <SlCalender
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6A7282] w-4 h-4 cursor-pointer z-10"
+        onClick={() => datepickerRef.current?.setOpen(true)}
+      />
 
-        {/* Input with left padding to make space for the icon */}
-        <Input
-          type="datetime-local"
-          value={value}
-          onChange={handleDateTimeChange}
-          className="pl-10" // space for icon
-          min={new Date().toISOString().slice(0, 16)}
-          placeholder="Select date and time"
-        />
-      </div>
+      {/* DatePicker input */}
+      <DatePicker
+        ref={datepickerRef}
+        selected={selectedDate}
+        onChange={(date: Date | null) => {
+          onChange({
+            target: { value: date ? date.toISOString().split("T")[0] : "" },
+          } as React.ChangeEvent<HTMLInputElement>);
+        }}
+        minDate={new Date()}
+        placeholderText={placeholder}
+        className={cn(
+          "w-full h-11 rounded-lg border border-transparent bg-[#F9FAFB] pl-10 pr-3 text-[#6A7282]",
+          "focus:outline-none focus:ring-2 focus:ring-[#D1D5DB] transition-all duration-200",
+          "relative z-0"
+        )}
+        dateFormat="yyyy-MM-dd"
+      />
 
-      {/* Affichage formaté */}
-      {value && (
-        <div className="text-sm text-muted-foreground">
-          Heure souhaitée : {formatDisplayDate(value)}
-        </div>
-      )}
+      {/* Optional: hide default react-datepicker triangle */}
+      <style jsx>{`
+        .react-datepicker__triangle {
+          display: none;
+        }
+        .react-datepicker-wrapper {
+          width: 100%;
+        }
+        .react-datepicker__input-container input {
+          width: 100%;
+        }
+      `}</style>
     </div>
   );
 }

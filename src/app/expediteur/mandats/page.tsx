@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { SlHome } from "react-icons/sl";
-import { FaSliders } from "react-icons/fa6";
+import { FaArrowRight, FaSliders } from "react-icons/fa6";
 
 import {
   Table,
@@ -243,13 +243,16 @@ export default function MandatsPage() {
   const renderTypeBadge = (type?: string) => {
     if (!type)
       return (
-        <Badge variant="outline" className="text-xs">
+        <Badge
+          variant="outline"
+          className="text-xs bg-[#FCD9BD] text-[#771D1D]"
+        >
           Non spécifié
         </Badge>
       );
     if (type.toLowerCase().includes("palette")) {
       return (
-        <Badge className="text-xs bg-[#EDF7FF] text-[#186BB0] border-transparent">
+        <Badge className="text-xs bg-[#186BB0] text-[#186BB0] border-transparent">
           Palette
         </Badge>
       );
@@ -264,7 +267,10 @@ export default function MandatsPage() {
   const renderStatusBadge = (status?: string) => {
     if (!status)
       return (
-        <Badge variant="outline" className="text-xs">
+        <Badge
+          variant="outline"
+          className="text-xs bg-[#FCD9BD] text-[#771D1D]"
+        >
           En attente
         </Badge>
       );
@@ -272,7 +278,7 @@ export default function MandatsPage() {
     switch (status) {
       case "delivered":
         return (
-          <Badge className="text-xs bg-[#ECFDF5] text-[#059669] border-transparent">
+          <Badge className="text-xs  text-[#004F3B] bg-[#A4F4CF] border-transparent">
             Livré
           </Badge>
         );
@@ -296,7 +302,10 @@ export default function MandatsPage() {
         );
       default:
         return (
-          <Badge variant="outline" className="text-xs">
+          <Badge
+            variant="outline"
+            className="text-xs bg-[#FCD9BD] text-[#771D1D]"
+          >
             En attente
           </Badge>
         );
@@ -304,7 +313,7 @@ export default function MandatsPage() {
   };
 
   return (
-    <div className="py-[10px] pr-[10px] bg-sidebar">
+    <div className="py-[10px] pr-[10px] bg-sidebar ">
       <div className="flex items-center rounded-tr-xl rounded-tl-xl  justify-between h-[80px] p-4 border-b bg-white">
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <div className="flex items-center gap-2 text-[#101828]">
@@ -318,7 +327,7 @@ export default function MandatsPage() {
           <Button
             onClick={() => router.push("/expediteur/mandats/create")}
             size="sm"
-            className="bg-[#0B69A3] text-white hover:bg-[#095d8b] rounded-md flex items-center gap-2"
+            className="bg-[#0B69A3] text-white hover:bg-[#095d8b] cursor-pointer rounded-md flex items-center gap-2"
           >
             <Plus className="h-3.5 w-3.5" />
             Créer un mandat
@@ -439,7 +448,7 @@ export default function MandatsPage() {
             </div>
           </div>
           <div className="flex gap-3">
-            <button className="px-3 py-1.5 rounded-lg bg-[#186BB0] text-white text-sm font-medium">
+            <button className="px-3 py-1.5 rounded-full bg-[#186BB0] text-white text-sm font-medium">
               <SlHome className="inline-block mr-1 font-bold mb-1 w-4 h-4" />
               En cours
             </button>
@@ -580,26 +589,34 @@ export default function MandatsPage() {
 
                       <TableCell>
                         <div className="text-sm min-w-[180px]">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-[#10B981] rounded-full" />
-                            <div>
-                              <div className="text-[#0F172A] truncate">
-                                {mandat.depart_adresse ||
-                                  mandat.payload?.adresse_depart?.adresse ||
-                                  "Départ non défini"}
+                          <div className=" flex flex-row items-center justify-center gap-4">
+                            <div className="flex items-center gap-4">
+                              <div>
+                                <div className="text-[#0F172A] truncate">
+                                  {mandat.depart_adresse ||
+                                    mandat.payload?.adresse_depart?.adresse ||
+                                    "Départ non défini"}
+                                </div>
+                                <div className="text-[#7D8B9F] text-xs">
+                                  {mandat?.date_creation}
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                          <div className="my-2 border-l-2 border-dashed border-[#E6E9EE] h-2 ml-3" />
-
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-[#EF4444] rounded-full" />
                             <div>
-                              <div className="text-[#0F172A] truncate">
-                                {mandat.arrivee_adresse ||
-                                  mandat.payload?.adresse_arrivee?.adresse ||
-                                  "Arrivée non définie"}
+                              <FaArrowRight size={16} className="h-3 w-3" />
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <div>
+                                <div className="text-[#0F172A] truncate">
+                                  {mandat.arrivee_adresse ||
+                                    mandat.payload?.adresse_arrivee?.adresse ||
+                                    "Arrivée non définie"}
+                                </div>
+                                <div className="text-[#7D8B9F] text-xs">
+                                  {mandat?.date_creation}
+                                </div>
                               </div>
                             </div>
                           </div>

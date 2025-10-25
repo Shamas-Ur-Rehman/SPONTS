@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowLeft, AlertCircle } from "lucide-react";
+import { ArrowLeft, AlertCircle, ChevronRight } from "lucide-react";
 import { Mandat } from "@/types/mandat";
 import Link from "next/link";
 import { MandatContent } from "@/components/pages/mandats/MandatContent";
@@ -158,6 +158,7 @@ export default function MandatDetailPage() {
             >
               <IoDocumentTextOutline className="h-4 w-4" />
               <span>Mes mandats </span>
+              <ChevronRight className="h-4 w-4" />
             </Button>
           </Link>
 
@@ -178,7 +179,7 @@ export default function MandatDetailPage() {
       </main>
 
       {/* Footer */}
-       <footer className="border-t border-border py-6 px-8 text-sm text-muted-foreground flex items-center justify-between">
+      <footer className="border-t border-border py-6 px-8 text-sm text-muted-foreground flex items-center justify-between">
         <p>© 2025 Revers0. Tous droits réservés.</p>
         <div className="flex items-center gap-8">
           <p>Mentions légales</p>
