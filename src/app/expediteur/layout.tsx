@@ -17,6 +17,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarInset,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -41,6 +42,17 @@ import { supabase } from "@/supabase/supabase";
 interface ExpediteurLayoutProps {
   children: React.ReactNode;
 }
+
+const SideBaRIcon = () => {
+  const { open, isHovered } = useSidebar();
+  return (
+    <ChevronUp
+      className={`h-4 w-4 text-muted-foreground ${
+        open || isHovered ? "" : "hidden"
+      }`}
+    />
+  );
+};
 
 export default function ExpediteurLayout({ children }: ExpediteurLayoutProps) {
   const { user, signOut, isAdmin } = useAuthContext();
@@ -138,7 +150,7 @@ export default function ExpediteurLayout({ children }: ExpediteurLayoutProps) {
       <SidebarProvider>
         <Sidebar
           collapsible="icon"
-          className="border-r border-sidebar-border rounded-lg bg-sidebar"
+          className=" !border-r-0 !border-none rounded-lg bg-sidebar"
         >
           <SidebarHeader>
             <div className="flex justify-center items-center gap-3 px-2 py-2">
@@ -215,7 +227,7 @@ export default function ExpediteurLayout({ children }: ExpediteurLayoutProps) {
 
                   {/* Afficher les paramètres seulement pour les owners */}
                   {isOwner && (
-                    <SidebarMenuItem>
+                    <SidebarMenuItem className="!justify-left">
                       <SidebarMenuButton
                         asChild
                         isActive={pathname === "/expediteur/equipe"}
@@ -274,7 +286,7 @@ export default function ExpediteurLayout({ children }: ExpediteurLayoutProps) {
                         {user?.email || "email@example.com"}
                       </div>
                     </div>
-                    <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                    <SideBaRIcon />
                   </div>
                 </Button>
               </DropdownMenuTrigger>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -240,7 +240,6 @@ export default function MandatsPage() {
     setIsDrawerOpen(false);
     setSelectedMandat(null);
   };
-
   const renderTypeBadge = (type?: string) => {
     if (!type)
       return (
@@ -305,8 +304,8 @@ export default function MandatsPage() {
   };
 
   return (
-    <>
-      <div className="flex items-center justify-between p-4 border-b bg-white">
+    <div className="py-[10px] pr-[10px] bg-sidebar">
+      <div className="flex items-center rounded-tr-xl rounded-tl-xl  justify-between h-[80px] p-4 border-b bg-white">
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <div className="flex items-center gap-2 text-[#101828]">
             <IoDocumentTextOutline className="h-4 w-4 text-[#6B7280]" />
@@ -323,21 +322,20 @@ export default function MandatsPage() {
           >
             <Plus className="h-3.5 w-3.5" />
             Créer un mandat
-            
           </Button>
-          
+
           <div className="w-9 h-9 rounded-full overflow-hidden border">
             {/* avatarSrc is guaranteed to be a string now (never {}), so TypeScript error is avoided */}
             <img
               alt="avatar"
-             src="/avatar.png"
+              src="/avatar.png"
               className="w-full h-full object-cover"
             />
           </div>
         </div>
       </div>
 
-      <main className="p-6 bg-white">
+      <main className="p-6 bg-white rounded-br-xl rounded-bl-xl h-[calc(100vh-100px)] ">
         <div className="space-y-4 mb-6">
           <div className="mb-6 w-full">
             <label className="text-[#101828] block mb-2">Search</label>
@@ -802,6 +800,6 @@ export default function MandatsPage() {
           onClose={handleCloseDrawer}
         />
       </main>
-    </>
+    </div>
   );
 }
