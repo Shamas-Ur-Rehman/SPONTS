@@ -24,9 +24,6 @@ export default function MandatDetailPage() {
 
   const mandatId = params.id as string;
 
-  /**
-   * Récupération des détails du mandat
-   */
   const fetchMandatDetails = useCallback(async () => {
     try {
       setLoading(true);
@@ -134,6 +131,15 @@ export default function MandatDetailPage() {
             </Link>
           </div>
         </main>
+
+        {/* Footer */}
+        <footer className="w-full border-t border-border py-5 px-5 text-sm text-muted-foreground flex items-center justify-between">
+          <div className="flex items-center gap-10">
+            <p>Mentions légales</p>
+            <p>Support</p>
+          </div>
+          <p>© 2025 Revers0. Tous droits réservés.</p>
+        </footer>
       </>
     );
   }
@@ -141,8 +147,8 @@ export default function MandatDetailPage() {
   return (
     <>
       <div className="flex items-center gap-2 p-4 border-b">
-        <SidebarTrigger />
-        <Separator orientation="vertical" className="h-6" />
+        {/* <SidebarTrigger /> */}
+        {/* <Separator orientation="vertical" className="h-6" /> */}
         <div className="flex items-center gap-2">
           <Link href="/expediteur/mandats">
             <Button
@@ -151,22 +157,34 @@ export default function MandatDetailPage() {
               className="flex items-center gap-2"
             >
               <IoDocumentTextOutline className="h-4 w-4" />
-              <ArrowLeft className="h-4 w-4" />
-              <span>Mes mandats</span>
+              <span>Mes mandats </span>
             </Button>
           </Link>
 
-          <span className="text-muted-foreground">/</span>
-          <span className="font-medium">Transport Rapide - Lausanne</span>
-          <Badge variant="secondary" className="ml-2">
-            Livré
-          </Badge>
+          <span className="font-medium text-[#186BB0]">
+            Transport Rapide - Lausanne
+          </span>
+
+          <img
+            src="/Badge.png"
+            alt="Livré"
+            className="h-10 w-10 object-contain"
+          />
         </div>
       </div>
 
       <main className="p-6">
         <MandatContent mandat={mandat} />
       </main>
+
+      {/* Footer */}
+       <footer className="border-t border-border py-6 px-8 text-sm text-muted-foreground flex items-center justify-between">
+        <p>© 2025 Revers0. Tous droits réservés.</p>
+        <div className="flex items-center gap-8">
+          <p>Mentions légales</p>
+          <p>Support</p>
+        </div>
+      </footer>
     </>
   );
 }

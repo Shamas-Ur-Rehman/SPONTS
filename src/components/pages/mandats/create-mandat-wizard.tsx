@@ -981,17 +981,17 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
     checked: boolean;
     onChange: (checked: boolean) => void;
   }) => (
-    <button
+  <button
       type="button"
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-        checked ? "bg-primary" : "bg-gray-200"
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none ${
+        checked ? "bg-[#186BB0]" : "bg-gray-300"
       }`}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
           checked ? "translate-x-6" : "translate-x-1"
         }`}
       />
@@ -1024,14 +1024,14 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
               />
               <Label
                 htmlFor="sensi_temperature"
-                className="text-sm font-medium cursor-pointer"
+                className="text-sm font-medium cursor-pointer "
               >
                 Sensibilité à la température{" "}
                 <span style={{ color: "#C70036" }}>*</span>
               </Label>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                  <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help"/>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Nécessite un transport réfrigéré ou chauffé</p>
@@ -1760,20 +1760,27 @@ const AddressEnlevementForm = (goNext: () => void, goBack: () => void) => (
           />
         </div>
         <div className="border border-gray-300 rounded-lg p-6 bg-gray-50 text-center">
-          <div className="relative h-5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="absolute left-0 top-0 h-full bg-[#45c4b0] w-[50%] rounded-full" />
-            <div className="absolute z-10 bg-white rounded-full p-1 shadow-sm" style={{ left: '47%', top: '50%', transform: 'translateY(-50%)' }}>
-              <img 
-                src="/Frame.png" 
-                alt="arrow" 
-                width="16" 
-                height="16"
-                className="object-contain"
-              />
-            </div>
-            <p className="absolute inset-0 flex items-center justify-center text-xs text-gray-600"></p>
-          </div>
-        </div>
+  <div className="relative h-5 bg-gray-200 rounded-full overflow-hidden">
+    <div className="absolute left-0 top-0 h-full bg-[#45c4b0] w-[50%] rounded-full" />
+    <div
+      className="absolute z-10 bg-white rounded-full p-1 shadow-sm"
+      style={{ left: '47%', top: '50%', transform: 'translateY(-50%)' }}
+    >
+      <img
+        src="/Frame.png"
+        alt="arrow"
+        width="16"
+        height="16"
+        className="object-contain"
+      />
+    </div>
+    <p className="absolute inset-0 flex items-center justify-center text-xs text-gray-600"></p>
+  </div>
+
+  {/* Text below the progress bar */}
+  <p className="mt-3 text-sm text-gray-600">Balayez vers la droite pour signer…</p>
+</div>
+
       </div>
 
       <div className="p-4 rounded-lg bg-muted/30 space-y-3 border">
