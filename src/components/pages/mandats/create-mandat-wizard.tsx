@@ -331,12 +331,14 @@ export function CreateMandatWizard() {
         </div>
 
         {/* Images */}
-        <div className="space-y-2">
+        <div className="space-y-2 ">
           <Label className="text-sm font-medium">Ajouter des photos</Label>
-          <ImageUploadZone
-            currentImages={data.images}
-            onImagesChange={(imgs) => handleChange("images", imgs)}
-          />
+          <div className="bg-[#F9FAFB] rounded-lg">
+            <ImageUploadZone
+              currentImages={data.images}
+              onImagesChange={(imgs) => handleChange("images", imgs)}
+            />
+          </div>
         </div>
 
         {/* Navigation custom */}
@@ -1237,13 +1239,11 @@ export function CreateMandatWizard() {
       content: (next, back) => {
         if (addressSubStep === 0) {
           return AddressEnlevementForm(() => {
-            // When continuing from enlèvement, go to livraison
             setAddressSubStep(1);
           }, back);
         } else {
           return AddressLivraisonForm(() => {
-            // When continuing from livraison, go to next main step
-            setAddressSubStep(0); // Reset for next time
+            setAddressSubStep(0);
             next();
           });
         }
@@ -1286,7 +1286,7 @@ export function CreateMandatWizard() {
                         enlevement_souhaite_debut_at: e.target.value,
                       }))
                     }
-                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
+                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full border-1 border-[#E5E7EB]"
                   />
                 </div>
                 {/* <DateTimeInput
@@ -1318,7 +1318,7 @@ export function CreateMandatWizard() {
                         enlevement_souhaite_fin_at: e.target.value,
                       }))
                     }
-                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
+                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full border-1 border-[#E5E7EB] "
                   />
                 </div>
 
@@ -1350,7 +1350,7 @@ export function CreateMandatWizard() {
                       enlevement_max_at: e.target.value,
                     }))
                   }
-                  className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
+                  className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full border-1 border-[#E5E7EB]"
                 />
               </div>
               {/* <DateTimeInput
@@ -1385,7 +1385,7 @@ export function CreateMandatWizard() {
                         livraison_prevue_debut_at: e.target.value,
                       }))
                     }
-                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
+                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full border-1 border-[#E5E7EB]"
                   />
                 </div>
                 {/* <DateTimeInput
@@ -1414,7 +1414,7 @@ export function CreateMandatWizard() {
                         livraison_prevue_fin_at: e.target.value,
                       }))
                     }
-                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full"
+                    className=" rounded-lg text-[#6A7282] bg-[#F9FAFB]  w-full border-1 border-[#E5E7EB]"
                   />
 
                   {/* <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
@@ -1438,12 +1438,12 @@ export function CreateMandatWizard() {
           </div>
 
           {/* Message d'information */}
-          <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
-            <p className="text-sm text-[#0E406A] flex items-start gap-2">
-              <FiAlertCircle className="w-4 h-4" />
+          <div className="p-4 rounded-lg bg-[#FBFDFF] border border-[#CEE0EF]">
+            <p className="text-sm text-[#0E406A] flex items-start gap-2 ">
+              <FiAlertCircle className="w-4 h-4 mt-1" />
               Les horaires exacts pourront être confirmés avec le transporteur
               après la mise en relation.
-              <span style={{ color: "#C70036" }}>*</span>
+              <span style={{ color: "#0E406A" }}>*</span>
             </p>
           </div>
 
@@ -1938,9 +1938,12 @@ export function CreateMandatWizard() {
         {/* Colonne latérale gauche fixe - Navigation des étapes */}
         <aside className="w-auto bg-[#F9FAFB] border-border px-[20px] py-[10px] flex flex-col overflow-auto rounded-lg">
           <div className="mb-4">
-            <h1 className="text-lg font-semibold mb-1">Créer un mandat</h1>
-            <p className="text-xs text-muted-foreground">
-              Suivez les étapes pour publier votre demande de transport.
+            <h1 className="text-lg font-bold mb-1 text-[#111827]">
+              Créer un mandat
+            </h1>
+            <p className="text-base text-muted-foreground">
+              Suivez les étapes pour publier votre
+              <br /> demande de transport.
             </p>
           </div>
 
@@ -2041,7 +2044,7 @@ export function CreateMandatWizard() {
                 <span className="text-xs font-medium text-white">
                   {activeStep}/{steps.length} étape(s)
                 </span>
-                <span className="text-xs font-medium text-white">
+                <span className="text-xs font-bold text-white">
                   {Math.round((activeStep / steps.length) * 100)}%
                 </span>
               </div>

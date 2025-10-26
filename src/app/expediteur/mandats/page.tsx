@@ -340,7 +340,9 @@ export default function MandatsPage() {
       <main className="p-6 bg-white rounded-br-xl rounded-bl-xl h-[calc(100vh-100px)] overflow-y-auto overflow-x-hidden">
         <div className="space-y-4 mb-6">
           <div className="mb-6 w-full">
-            <label className="text-[#101828] block mb-2">Search</label>
+            <label className="text-[#101828] font-semibold block mb-2">
+              Search
+            </label>
             <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -354,7 +356,7 @@ export default function MandatsPage() {
 
           <div className="grid grid-cols-12 gap-4 items-end">
             <div className="col-span-4">
-              <label className="text-xs text-[#101828] mb-1 block">
+              <label className=" text-[#101828] font-semibold mb-1 block">
                 Période <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -383,7 +385,7 @@ export default function MandatsPage() {
             </div>
 
             <div className="col-span-4">
-              <label className="text-xs text-[#101828] mb-1 block">
+              <label className=" text-[#101828] font-semibold mb-1 block">
                 Statut
               </label>
               <div className="relative">
@@ -412,7 +414,7 @@ export default function MandatsPage() {
             </div>
 
             <div className="col-span-4">
-              <label className="text-xs text-[#101828] mb-1 block">
+              <label className=" text-[#101828] font-semibold mb-1 block">
                 Type de marchandise
               </label>
               <div className="relative">
@@ -517,7 +519,6 @@ export default function MandatsPage() {
                     : "Aucun mandat n'a été créé dans cette entreprise."}
                 </p>
                 {!searchTerm &&
-
                   ["owner", "admin"].includes(userRole || "") &&
                   user?.company?.status === "approved" && (
                     <Link href="/expediteur/mandats/create">
@@ -536,193 +537,205 @@ export default function MandatsPage() {
               <div className="overflow-x-auto max-w-full">
                 <Table className="w-full table-fixed">
                   <colgroup>
-                    <col style={{width: '120px'}} />
-                    <col style={{width: '150px'}} />
-                    <col style={{width: '350px'}} />
-                    <col style={{width: '150px'}} />
-                    <col style={{width: '120px'}} />
-                    <col style={{width: '120px'}} />
-                    <col style={{width: '120px'}} />
-                    <col style={{width: '120px'}} />
-                    <col style={{width: '100px'}} />
+                    <col style={{ width: "120px" }} />
+                    <col style={{ width: "150px" }} />
+                    <col style={{ width: "350px" }} />
+                    <col style={{ width: "150px" }} />
+                    <col style={{ width: "120px" }} />
+                    <col style={{ width: "120px" }} />
+                    <col style={{ width: "120px" }} />
+                    <col style={{ width: "120px" }} />
+                    <col style={{ width: "100px" }} />
                   </colgroup>
-                <TableHeader>
-                  <TableRow className="bg-[#FBFDFF]">
-                    <TableHead>N° Mandat</TableHead>
-                    <TableHead>Nom</TableHead>
-                    <TableHead>Trajet</TableHead>
-                    <TableHead>Transporteur</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Prix Estimé</TableHead>
-                    <TableHead>Facture</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedMandats.map((mandat) => (
-                    <TableRow
-                      key={mandat.id}
-                      className="cursor-pointer hover:bg-[#FBFBFB]"
-                      onClick={() => handleRowClick(mandat)}
-                    >
-                      <TableCell className="font-medium">
-                        <Link
-                          href={`/expediteur/mandats/${mandat.id}`}
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-[#0B69A3] text-sm font-medium"
-                        >
-                          {`MND-${new Date().getFullYear()}-${String(
-                            mandat.id
-                          ).padStart(3, "0")}`}
-                        </Link>
-                      </TableCell>
+                  <TableHeader>
+                    <TableRow className="bg-[#FBFDFF]">
+                      <TableHead>N° Mandat</TableHead>
+                      <TableHead>Nom</TableHead>
+                      <TableHead>Trajet</TableHead>
+                      <TableHead>Transporteur</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Prix Estimé</TableHead>
+                      <TableHead>Facture</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedMandats.map((mandat) => (
+                      <TableRow
+                        key={mandat.id}
+                        className="cursor-pointer hover:bg-[#FBFBFB]"
+                        onClick={() => handleRowClick(mandat)}
+                      >
+                        <TableCell className="font-medium">
+                          <Link
+                            href={`/expediteur/mandats/${mandat.id}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-[#0B69A3] text-sm font-medium"
+                          >
+                            {`MND-${new Date().getFullYear()}-${String(
+                              mandat.id
+                            ).padStart(3, "0")}`}
+                          </Link>
+                        </TableCell>
 
-                      <TableCell>
-                        <div className="max-w-[150px]">
-                          <div className="font-medium text-sm truncate">
-                            {mandat.nom ||
-                              mandat.payload?.nom ||
-                              "Non spécifié"}
+                        <TableCell>
+                          <div className="max-w-[150px]">
+                            <div className="font-medium text-sm truncate">
+                              {mandat.nom ||
+                                mandat.payload?.nom ||
+                                "Non spécifié"}
+                            </div>
+                            {mandat.description && (
+                              <div className="text-xs text-[#6B7280] truncate">
+                                {mandat.description}
+                              </div>
+                            )}
                           </div>
-                          {mandat.description && (
-                            <div className="text-xs text-[#6B7280] truncate">
-                              {mandat.description}
+                        </TableCell>
+
+                        <TableCell>
+                          <div className="text-sm max-w-full">
+                            <div className="flex flex-row items-center gap-2">
+                              <div className="flex-1 min-w-0">
+                                <div
+                                  className="text-[#0F172A] truncate"
+                                  title={
+                                    mandat.depart_adresse ||
+                                    mandat.payload?.adresse_depart?.adresse
+                                  }
+                                >
+                                  {mandat.depart_adresse ||
+                                    mandat.payload?.adresse_depart?.adresse ||
+                                    "Départ non défini"}
+                                </div>
+                                <div className="text-[#7D8B9F] text-xs">
+                                  {mandat?.date_creation}
+                                </div>
+                              </div>
+
+                              <div className="flex-shrink-0">
+                                <FaArrowRight size={12} className="h-3 w-3" />
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                <div
+                                  className="text-[#0F172A] truncate"
+                                  title={
+                                    mandat.arrivee_adresse ||
+                                    mandat.payload?.adresse_arrivee?.adresse
+                                  }
+                                >
+                                  {mandat.arrivee_adresse ||
+                                    mandat.payload?.adresse_arrivee?.adresse ||
+                                    "Arrivée non définie"}
+                                </div>
+                                <div className="text-[#7D8B9F] text-xs">
+                                  {mandat?.date_creation}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </TableCell>
+
+                        <TableCell>
+                          {mandat.transporteur_company_id ? (
+                            <div className="text-sm text-[#0B69A3]">
+                              Transporteur attribué
+                            </div>
+                          ) : (
+                            <div className="text-sm text-[#6B7280] italic">
+                              À attribuer
                             </div>
                           )}
-                        </div>
-                      </TableCell>
+                        </TableCell>
 
-                      <TableCell>
-                        <div className="text-sm max-w-full">
-                          <div className="flex flex-row items-center gap-2">
-                            <div className="flex-1 min-w-0">
-                              <div className="text-[#0F172A] truncate" title={mandat.depart_adresse || mandat.payload?.adresse_depart?.adresse}>
-                                {mandat.depart_adresse ||
-                                  mandat.payload?.adresse_depart?.adresse ||
-                                  "Départ non défini"}
-                              </div>
-                              <div className="text-[#7D8B9F] text-xs">
-                                {mandat?.date_creation}
-                              </div>
+                        <TableCell>
+                          {renderTypeBadge(mandat.type_marchandise)}
+                        </TableCell>
+
+                        <TableCell>
+                          {renderStatusBadge(mandat.transporteur_status)}
+                        </TableCell>
+
+                        <TableCell>
+                          {mandat.prix_estime_ttc ? (
+                            <div className="font-medium whitespace-nowrap">
+                              {new Intl.NumberFormat("fr-FR", {
+                                style: "currency",
+                                currency: mandat.monnaie || "EUR",
+                              }).format(mandat.prix_estime_ttc)}
                             </div>
-
-                            <div className="flex-shrink-0">
-                              <FaArrowRight size={12} className="h-3 w-3" />
+                          ) : (
+                            <div className="text-sm text-[#6B7280] italic">
+                              Non calculé
                             </div>
+                          )}
+                        </TableCell>
 
-                            <div className="flex-1 min-w-0">
-                              <div className="text-[#0F172A] truncate" title={mandat.arrivee_adresse || mandat.payload?.adresse_arrivee?.adresse}>
-                                {mandat.arrivee_adresse ||
-                                  mandat.payload?.adresse_arrivee?.adresse ||
-                                  "Arrivée non définie"}
-                              </div>
-                              <div className="text-[#7D8B9F] text-xs">
-                                {mandat?.date_creation}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </TableCell>
-
-                      <TableCell>
-                        {mandat.transporteur_company_id ? (
-                          <div className="text-sm text-[#0B69A3]">
-                            Transporteur attribué
-                          </div>
-                        ) : (
-                          <div className="text-sm text-[#6B7280] italic">
-                            À attribuer
-                          </div>
-                        )}
-                      </TableCell>
-
-                      <TableCell>
-                        {renderTypeBadge(mandat.type_marchandise)}
-                      </TableCell>
-
-                      <TableCell>
-                        {renderStatusBadge(mandat.transporteur_status)}
-                      </TableCell>
-
-                      <TableCell>
-                        {mandat.prix_estime_ttc ? (
-                          <div className="font-medium whitespace-nowrap">
-                            {new Intl.NumberFormat("fr-FR", {
-                              style: "currency",
-                              currency: mandat.monnaie || "EUR",
-                            }).format(mandat.prix_estime_ttc)}
-                          </div>
-                        ) : (
-                          <div className="text-sm text-[#6B7280] italic">
-                            Non calculé
-                          </div>
-                        )}
-                      </TableCell>
-
-                      <TableCell>
-                        {mandat.statut_facturation ? (
-                          <a
-                            href={`/invoices/${mandat.id}`}
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-sm text-[#0B69A3] underline"
-                          >
-                            id_facture.pdf
-                          </a>
-                        ) : (
-                          <div className="text-sm text-[#9CA3AF] italic">
-                            Indisponible
-                          </div>
-                        )}
-                      </TableCell>
-
-                      <TableCell>
-                        <div
-                          className="flex items-center gap-1"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Link href={`/expediteur/mandats/${mandat.id}`}>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0"
+                        <TableCell>
+                          {mandat.statut_facturation ? (
+                            <a
+                              href={`/invoices/${mandat.id}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-sm text-[#0B69A3] underline"
                             >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </Link>
+                              id_facture.pdf
+                            </a>
+                          ) : (
+                            <div className="text-sm text-[#9CA3AF] italic">
+                              Indisponible
+                            </div>
+                          )}
+                        </TableCell>
 
-                          {["owner", "admin"].includes(userRole || "") && (
-                            <>
+                        <TableCell>
+                          <div
+                            className="flex items-center gap-1"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Link href={`/expediteur/mandats/${mandat.id}`}>
                               <Button
                                 variant="ghost"
                                 size="sm"
                                 className="h-8 w-8 p-0"
                               >
-                                <Edit className="h-4 w-4" />
+                                <Eye className="h-4 w-4" />
                               </Button>
+                            </Link>
 
-                              {mandat.status === "approved" && (
+                            {["owner", "admin"].includes(userRole || "") && (
+                              <>
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteClick(mandat);
-                                  }}
-                                  disabled={deletingMandatId === mandat.id}
-                                  className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                  className="h-8 w-8 p-0"
                                 >
-                                  <Trash2 className="h-4 w-4" />
+                                  <Edit className="h-4 w-4" />
                                 </Button>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+
+                                {mandat.status === "approved" && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteClick(mandat);
+                                    }}
+                                    disabled={deletingMandatId === mandat.id}
+                                    className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
             </div>
 
