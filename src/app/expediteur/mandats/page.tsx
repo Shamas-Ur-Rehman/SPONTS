@@ -47,6 +47,21 @@ import { Mandat } from "@/types/mandat";
 import Link from "next/link";
 import { toast } from "sonner";
 
+export const formatDateTime = (date: any) => {
+  if (!date) return "";
+
+  const d = new Date(date);
+
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
+
+  const hours = String(d.getHours()).padStart(2, "0");
+  const minutes = String(d.getMinutes()).padStart(2, "0");
+
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+};
+
 export default function MandatsPage() {
   const { user, handleTokenExpiration } = useAuth();
   const router = useRouter();
@@ -239,14 +254,14 @@ export default function MandatsPage() {
       return (
         <Badge
           variant="outline"
-          className="text-xs bg-[#FCD9BD] text-[#771D1D]"
+          className="text-xs bg-[#FFF8F1] border-[#FCD9BD] text-[#771D1D]"
         >
           Non spécifié
         </Badge>
       );
     if (type.toLowerCase().includes("palette")) {
       return (
-        <Badge className="text-xs bg-[#186BB0] text-[#186BB0] border-transparent">
+        <Badge className="text-xs bg-[#186BB0] text-[#186BB0] border-[#E4EEF7]">
           Palette
         </Badge>
       );
@@ -263,7 +278,7 @@ export default function MandatsPage() {
       return (
         <Badge
           variant="outline"
-          className="text-xs bg-[#FCD9BD] text-[#771D1D]"
+          className="text-xs bg-[#FFF8F1] border-[#FCD9BD] text-[#771D1D]"
         >
           En attente
         </Badge>
@@ -272,25 +287,25 @@ export default function MandatsPage() {
     switch (status) {
       case "delivered":
         return (
-          <Badge className="text-xs  text-[#004F3B] bg-[#A4F4CF] border-transparent">
+          <Badge className="text-xs  text-[#004F3B] bg-[#ECFDF5] border-[#A4F4CF]">
             Livré
           </Badge>
         );
       case "picked_up":
         return (
-          <Badge className="text-xs bg-[#FEF3C7] text-[#92400E] border-transparent">
+          <Badge className="text-xs bg-[#FFF8F1] border-[#FCD9BD] text-[#771D1D]">
             Enlevé
           </Badge>
         );
       case "accepted":
         return (
-          <Badge className="text-xs bg-[#EEF2FF] text-[#3730A3] border-transparent">
+          <Badge className="text-xs bg-[#E4EEF7] text-[#3730A3] border-[#186BB0]">
             Accepté
           </Badge>
         );
       case "delivery_problem":
         return (
-          <Badge className="text-xs bg-[#FFF1F2] text-[#BE123C] border-transparent">
+          <Badge className="text-xs bg-[#FFF8F1] border-[#FCD9BD] text-[#771D1D]">
             Problème
           </Badge>
         );
@@ -298,7 +313,7 @@ export default function MandatsPage() {
         return (
           <Badge
             variant="outline"
-            className="text-xs bg-[#FCD9BD] text-[#771D1D]"
+            className="text-xs bg-[#FFF8F1] border-[#FCD9BD] text-[#771D1D]"
           >
             En attente
           </Badge>
@@ -340,7 +355,7 @@ export default function MandatsPage() {
       <main className="p-6 bg-white rounded-br-xl rounded-bl-xl h-[calc(100vh-100px)] overflow-y-auto overflow-x-hidden">
         <div className="space-y-4 mb-6">
           <div className="mb-6 w-full">
-            <label className="text-[#101828] font-semibold block mb-2">
+            <label className="text-[#101828] font-normal block mb-2">
               Search
             </label>
             <div className="relative w-full">
@@ -356,7 +371,7 @@ export default function MandatsPage() {
 
           <div className="grid grid-cols-12 gap-4 items-end">
             <div className="col-span-4">
-              <label className=" text-[#101828] font-semibold mb-1 block">
+              <label className=" text-[#101828] font-normal mb-1 block">
                 Période <span className="text-red-500">*</span>
               </label>
               <div className="relative">
@@ -385,7 +400,7 @@ export default function MandatsPage() {
             </div>
 
             <div className="col-span-4">
-              <label className=" text-[#101828] font-semibold mb-1 block">
+              <label className=" text-[#101828] font-normal mb-1 block">
                 Statut
               </label>
               <div className="relative">
@@ -414,7 +429,7 @@ export default function MandatsPage() {
             </div>
 
             <div className="col-span-4">
-              <label className=" text-[#101828] font-semibold mb-1 block">
+              <label className=" text-[#101828] font-normal mb-1 block">
                 Type de marchandise
               </label>
               <div className="relative">
@@ -493,7 +508,7 @@ export default function MandatsPage() {
             <CardContent className="pt-6">
               <div className="text-center text-red-600">
                 <FileText className="h-12 w-12 mx-auto mb-4 text-red-400" />
-                <h3 className="text-lg font-semibold mb-2">
+                <h3 className="text-lg font-normal mb-2">
                   Erreur de chargement
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">{error}</p>
@@ -508,7 +523,7 @@ export default function MandatsPage() {
             <CardContent className="pt-6">
               <div className="text-center">
                 <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">
+                <h3 className="text-lg font-normal mb-2">
                   {searchTerm ? "Aucun résultat" : "Aucun mandat"}
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
@@ -540,11 +555,11 @@ export default function MandatsPage() {
                     <col style={{ width: "120px" }} />
                     <col style={{ width: "150px" }} />
                     <col style={{ width: "350px" }} />
-                    <col style={{ width: "150px" }} />
                     <col style={{ width: "120px" }} />
-                    <col style={{ width: "120px" }} />
-                    <col style={{ width: "120px" }} />
-                    <col style={{ width: "120px" }} />
+                    <col style={{ width: "100px" }} />
+                    <col style={{ width: "100px" }} />
+                    <col style={{ width: "100px" }} />
+                    <col style={{ width: "100px" }} />
                     <col style={{ width: "100px" }} />
                   </colgroup>
                   <TableHeader>
@@ -610,7 +625,7 @@ export default function MandatsPage() {
                                     "Départ non défini"}
                                 </div>
                                 <div className="text-[#7D8B9F] text-xs">
-                                  {mandat?.date_creation}
+                                  {formatDateTime(mandat?.date_creation)}
                                 </div>
                               </div>
 
@@ -631,7 +646,7 @@ export default function MandatsPage() {
                                     "Arrivée non définie"}
                                 </div>
                                 <div className="text-[#7D8B9F] text-xs">
-                                  {mandat?.date_creation}
+                                  {formatDateTime(mandat?.date_creation)}
                                 </div>
                               </div>
                             </div>

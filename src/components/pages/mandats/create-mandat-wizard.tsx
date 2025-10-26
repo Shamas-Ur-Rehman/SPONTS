@@ -1276,8 +1276,9 @@ export function CreateMandatWizard() {
                   <span style={{ color: "#C70036" }}>*</span>
                 </Label>
                 <div className="relative">
-                  <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  {/* <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" /> */}
                   <DateTimeInput
+                    showTime
                     value={data.enlevement_souhaite_debut_at}
                     placeholder="Sélectionnez la date de départ souhaitée"
                     onChange={(e) =>
@@ -1308,8 +1309,9 @@ export function CreateMandatWizard() {
                   <span style={{ color: "#C70036" }}>*</span>
                 </Label>
                 <div className="relative">
-                  <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  {/* <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" /> */}
                   <DateTimeInput
+                    showTime
                     value={data.enlevement_souhaite_fin_at}
                     placeholder="Jusqu’à quelle date le retrait peut avoir lieu"
                     onChange={(e) =>
@@ -1340,8 +1342,9 @@ export function CreateMandatWizard() {
                 Deadline max enlèvement
               </Label>
               <div className="relative">
-                <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                {/* <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" /> */}
                 <DateTimeInput
+                  showTime
                   value={data.enlevement_max_at || ""}
                   placeholder="Dernier jour possible pour le retrait"
                   onChange={(e) =>
@@ -1375,8 +1378,9 @@ export function CreateMandatWizard() {
                   <span style={{ color: "#C70036" }}>*</span>
                 </Label>
                 <div className="relative">
-                  <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  {/* <MdOutlineCalendarMonth className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" /> */}
                   <DateTimeInput
+                    showTime
                     value={data.livraison_prevue_debut_at || ""}
                     placeholder="Date prévue de livraison"
                     onChange={(e) =>
@@ -1406,6 +1410,7 @@ export function CreateMandatWizard() {
                 </Label>
                 <div className="relative">
                   <DateTimeInput
+                    showTime
                     value={data.livraison_prevue_fin_at || ""}
                     placeholder="Dernier jour possible pour la livraison"
                     onChange={(e) =>
@@ -2016,11 +2021,11 @@ export function CreateMandatWizard() {
 
                     {/* LABEL */}
                     <div
-                      className={`flex-1 min-w-0 text-sm ${
+                      className={`flex-1 min-w-0 text-base font-[400] ${
                         isActive
                           ? "text-[#186BB0]"
                           : isCompleted
-                          ? "text-black"
+                          ? "text-[#6A7282]"
                           : ""
                       }`}
                     >
