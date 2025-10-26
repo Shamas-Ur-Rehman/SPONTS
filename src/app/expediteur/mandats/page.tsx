@@ -63,17 +63,10 @@ export default function MandatsPage() {
   const [selectedMandat, setSelectedMandat] = useState<Mandat | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  /**
-   * Fix: compute a strictly typed avatarSrc (string | undefined) so <img src={...} />
-   * does not receive an object ({}) which caused "Type '{}' is not assignable to type 'string | Blob | undefined'".
-   * When user.avatar_url is not a string, we fall back to a temporary public image (Google placeholder).
-   */
   const avatarSrc: string = (() => {
-    // If the user object provides a string avatar url, use it.
     if (typeof user?.avatar_url === "string" && user.avatar_url.length > 0) {
       return user.avatar_url;
     }
-    // fallback to a public Google-hosted placeholder image for now
     return "https://www.gstatic.com/images/branding/product/1x/avatar_circle_grey_512dp.png";
   })();
 
@@ -90,7 +83,7 @@ export default function MandatsPage() {
       const response = await fetch("/api/mandats", {
         headers: session?.access_token
           ? { Authorization: `Bearer ${session.access_token}` }
-          : undefined,
+          : {},
       });
 
       const result = await response.json();
@@ -240,6 +233,7 @@ export default function MandatsPage() {
     setIsDrawerOpen(false);
     setSelectedMandat(null);
   };
+
   const renderTypeBadge = (type?: string) => {
     if (!type)
       return (
@@ -313,8 +307,8 @@ export default function MandatsPage() {
   };
 
   return (
-    <div className="py-[10px] pr-[10px] bg-sidebar ">
-      <div className="flex items-center rounded-tr-xl rounded-tl-xl  justify-between h-[80px] p-4 border-b bg-white">
+    <div className="py-[10px] pr-[10px] bg-sidebar overflow-hidden">
+      <div className="flex items-center rounded-tr-xl rounded-tl-xl justify-between h-[80px] p-4 border-b bg-white">
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <div className="flex items-center gap-2 text-[#101828]">
             <IoDocumentTextOutline className="h-4 w-4 text-[#6B7280]" />
@@ -334,7 +328,6 @@ export default function MandatsPage() {
           </Button>
 
           <div className="w-9 h-9 rounded-full overflow-hidden border">
-            {/* avatarSrc is guaranteed to be a string now (never {}), so TypeScript error is avoided */}
             <img
               alt="avatar"
               src="/avatar.png"
@@ -344,7 +337,7 @@ export default function MandatsPage() {
         </div>
       </div>
 
-      <main className="p-6 bg-white rounded-br-xl rounded-bl-xl h-[calc(100vh-100px)] ">
+      <main className="p-6 bg-white rounded-br-xl rounded-bl-xl h-[calc(100vh-100px)] overflow-y-auto overflow-x-hidden">
         <div className="space-y-4 mb-6">
           <div className="mb-6 w-full">
             <label className="text-[#101828] block mb-2">Search</label>
@@ -524,6 +517,7 @@ export default function MandatsPage() {
                     : "Aucun mandat n'a été créé dans cette entreprise."}
                 </p>
                 {!searchTerm &&
+
                   ["owner", "admin"].includes(userRole || "") &&
                   user?.company?.status === "approved" && (
                     <Link href="/expediteur/mandats/create">
@@ -539,7 +533,19 @@ export default function MandatsPage() {
         ) : (
           <div className="space-y-4">
             <div className="border rounded-lg overflow-hidden">
-              <Table>
+              <div className="overflow-x-auto max-w-full">
+                <Table className="w-full table-fixed">
+                  <colgroup>
+                    <col style={{width: '120px'}} />
+                    <col style={{width: '150px'}} />
+                    <col style={{width: '350px'}} />
+                    <col style={{width: '150px'}} />
+                    <col style={{width: '120px'}} />
+                    <col style={{width: '120px'}} />
+                    <col style={{width: '120px'}} />
+                    <col style={{width: '120px'}} />
+                    <col style={{width: '100px'}} />
+                  </colgroup>
                 <TableHeader>
                   <TableRow className="bg-[#FBFDFF]">
                     <TableHead>N° Mandat</TableHead>
@@ -550,7 +556,7 @@ export default function MandatsPage() {
                     <TableHead>Status</TableHead>
                     <TableHead>Prix Estimé</TableHead>
                     <TableHead>Facture</TableHead>
-                    <TableHead className="w-[100px]">Actions</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -573,8 +579,8 @@ export default function MandatsPage() {
                       </TableCell>
 
                       <TableCell>
-                        <div className="max-w-[220px] truncate">
-                          <div className="font-medium text-sm">
+                        <div className="max-w-[150px]">
+                          <div className="font-medium text-sm truncate">
                             {mandat.nom ||
                               mandat.payload?.nom ||
                               "Non spécifié"}
@@ -588,35 +594,31 @@ export default function MandatsPage() {
                       </TableCell>
 
                       <TableCell>
-                        <div className="text-sm min-w-[180px]">
-                          <div className=" flex flex-row items-center justify-center gap-4">
-                            <div className="flex items-center gap-4">
-                              <div>
-                                <div className="text-[#0F172A] truncate">
-                                  {mandat.depart_adresse ||
-                                    mandat.payload?.adresse_depart?.adresse ||
-                                    "Départ non défini"}
-                                </div>
-                                <div className="text-[#7D8B9F] text-xs">
-                                  {mandat?.date_creation}
-                                </div>
+                        <div className="text-sm max-w-full">
+                          <div className="flex flex-row items-center gap-2">
+                            <div className="flex-1 min-w-0">
+                              <div className="text-[#0F172A] truncate" title={mandat.depart_adresse || mandat.payload?.adresse_depart?.adresse}>
+                                {mandat.depart_adresse ||
+                                  mandat.payload?.adresse_depart?.adresse ||
+                                  "Départ non défini"}
+                              </div>
+                              <div className="text-[#7D8B9F] text-xs">
+                                {mandat?.date_creation}
                               </div>
                             </div>
 
-                            <div>
-                              <FaArrowRight size={16} className="h-3 w-3" />
+                            <div className="flex-shrink-0">
+                              <FaArrowRight size={12} className="h-3 w-3" />
                             </div>
 
-                            <div className="flex items-center gap-2">
-                              <div>
-                                <div className="text-[#0F172A] truncate">
-                                  {mandat.arrivee_adresse ||
-                                    mandat.payload?.adresse_arrivee?.adresse ||
-                                    "Arrivée non définie"}
-                                </div>
-                                <div className="text-[#7D8B9F] text-xs">
-                                  {mandat?.date_creation}
-                                </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-[#0F172A] truncate" title={mandat.arrivee_adresse || mandat.payload?.adresse_arrivee?.adresse}>
+                                {mandat.arrivee_adresse ||
+                                  mandat.payload?.adresse_arrivee?.adresse ||
+                                  "Arrivée non définie"}
+                              </div>
+                              <div className="text-[#7D8B9F] text-xs">
+                                {mandat?.date_creation}
                               </div>
                             </div>
                           </div>
@@ -645,7 +647,7 @@ export default function MandatsPage() {
 
                       <TableCell>
                         {mandat.prix_estime_ttc ? (
-                          <div className="font-medium">
+                          <div className="font-medium whitespace-nowrap">
                             {new Intl.NumberFormat("fr-FR", {
                               style: "currency",
                               currency: mandat.monnaie || "EUR",
@@ -721,6 +723,7 @@ export default function MandatsPage() {
                   ))}
                 </TableBody>
               </Table>
+              </div>
             </div>
 
             {totalPages > 1 && (
